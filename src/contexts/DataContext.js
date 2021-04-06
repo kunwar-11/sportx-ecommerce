@@ -3,6 +3,8 @@ import {dataReducer} from '../reducers/dataReducer'
 const DataContext = createContext();
 const initialState = {
     data : [],
+    cart : [],
+    wishList : [],
     loading : false
 }
 export const DataProvider = ({children}) => {

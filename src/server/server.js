@@ -27,7 +27,7 @@ export default function createMockServer() {
                     fastDelivery : faker.datatype.boolean(),
                     inStock : faker.datatype.boolean(),
                     gender : faker.random.arrayElement(['Men' , 'Women' , 'Unisex' , 'Kids']),
-                    offers : faker.random.arrayElement(['Free Shipping' , 'Flat 40% OFF' , '10% Cashback on HDFC bank credit cards'])
+                    offers : faker.random.arrayElement(['Free Shipping' , 'Flat 40% OFF' , '10% Cashback on HDFC bank credit cards']) ,
                 })
             })
         }

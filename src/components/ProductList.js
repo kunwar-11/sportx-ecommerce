@@ -1,8 +1,9 @@
 import axios from 'axios'
 import React , {useEffect} from 'react'
 import {useData} from '../contexts/DataContext'
+import ProductCard from './ProductCard'
 const ProductList = () => {
-    const {state , dispatch} = useData()
+    const {state : {data , loading} , dispatch} = useData()
     useEffect(()=>{
         (async () => {
             try {
@@ -16,11 +17,15 @@ const ProductList = () => {
                 dispatch({type : 'LOADING_STATUS' , payload : false});
             }
         })();
-    }, [])
-    console.log(state)
+    }, [dispatch])
+    console.log(data)
     return (
         <div>
-            {!state.loading && state.data.map(product => <h1>{product.productName}</h1>)}
+            {loading ? <h3>Loading....</h3> : (
+                    <div className = 'grid__row__6' style = {{gridColumnGap : '0.7rem'}}>
+                        {data.map(product => <ProductCard className = 'grid__col__6' product = {product} key = {product.id}/>)}
+                    </div>
+            )}
         </div>
     )
 }

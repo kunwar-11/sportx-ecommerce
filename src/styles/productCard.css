@@ -1,0 +1,42 @@
+.rating-container {
+    display: flex;
+    align-items: center;
+    padding: 4.5px;
+    border-radius: 0.5rem;
+    border-style: none;
+    width: fit-content;
+}
+.card {
+    margin-bottom: 0.7rem;
+}
+.rating-good{
+    background-color: var(--success);
+}
+.rating-average{
+    background-color: #ffe338;
+}
+.rating-poor{
+    background-color: var(--danger);
+}
+.rating {
+    color: var(--white);
+    font-size: 12px;
+    font-weight: 520;
+}
+.fa-star{
+    font-size: 10px;
+    padding-left: 3px;
+    color: var(--white);
+}
+.fa-heart{
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 10;
+    cursor: pointer;
+    color: var(--white);
+    font-size: 1.5rem;
+}
+.wishlisted {
+    color: var(--danger);
+}
