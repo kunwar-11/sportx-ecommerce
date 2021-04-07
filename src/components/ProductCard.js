@@ -39,6 +39,9 @@ const ProductCard = ({product}) => {
             dispatch({type : 'ADD_TO_WISHLIST' , payload : product})
         }
     }
+    const isInCart = (prodId) => {
+       return cart.some(each => each.id === prodId) ? true : false
+    }
     //console.log(wishList)
     return (
         <div className="card card__with__overlayButton card__shadow">
@@ -55,8 +58,8 @@ const ProductCard = ({product}) => {
                     {price}
 		        </p>
             </div>
-            <i className={`fas fa-heart ${isWishListed(id)}`} onClick = {() => addToWishListHandler(id)}></i>
-            <button className="btn btn-primary" onClick = {()=> addToCartHandler(product)}>Add To Cart</button>
+            <i className={`heart fas fa-heart ${isWishListed(id)}`} onClick = {() => addToWishListHandler(id)}></i>
+            {isInCart(id) ? <button className="btn btn-secondary">Go To Cart</button> : <button className="btn btn-primary" onClick = {()=> addToCartHandler(product)}>Add To Cart</button>}
         </div>
     )
 }

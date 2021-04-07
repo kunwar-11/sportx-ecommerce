@@ -2,6 +2,7 @@ import axios from 'axios'
 import React , {useEffect} from 'react'
 import {useData} from '../contexts/DataContext'
 import ProductCard from './ProductCard'
+import '../styles/productList.css'
 const ProductList = () => {
     const {state : {data , loading} , dispatch} = useData()
     useEffect(()=>{
@@ -22,7 +23,7 @@ const ProductList = () => {
     return (
         <div>
             {loading ? <h3>Loading....</h3> : (
-                    <div className = 'grid__row__6' style = {{gridColumnGap : '0.7rem'}}>
+                    <div className = 'grid__row__6'>
                         {data.map(product => <ProductCard className = 'grid__col__6' product = {product} key = {product.id}/>)}
                     </div>
             )}

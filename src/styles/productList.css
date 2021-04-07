@@ -1,0 +1,23 @@
+.grid__row__6 {
+    grid-column-gap: 4px;
+}
+@media screen and (min-width : 769px) {
+    .grid__row__6 {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-column-gap: 1rem;
+        margin : 0 2rem;
+    }
+}
+@media screen and (max-width : 769px) {
+    .grid__row__6 {
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-column-gap: 1rem;
+        margin : 0 1rem;
+    }
+}
+
+@media screen and (max-width : 426px) {
+    .grid__row__6 {
+        grid-template-columns: 1fr 1fr;
+    }
+}

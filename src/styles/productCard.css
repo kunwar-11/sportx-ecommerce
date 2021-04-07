@@ -7,7 +7,7 @@
     width: fit-content;
 }
 .card {
-    margin-bottom: 0.7rem;
+    margin-bottom: 4px;
 }
 .rating-good{
     background-color: var(--success);
@@ -28,15 +28,25 @@
     padding-left: 3px;
     color: var(--white);
 }
-.fa-heart{
+.heart{
     position: absolute;
     top: 8px;
     right: 8px;
     z-index: 10;
     cursor: pointer;
-    color: var(--white);
+    color: var(--text);
     font-size: 1.5rem;
 }
 .wishlisted {
     color: var(--danger);
+}
+@media screen and (min-width : 769px) {
+    .card {
+        margin-bottom: 1rem;
+    }
+}
+@media screen and (max-width : 769px) {
+    .card {
+        margin-bottom: 1rem;
+    }
 }
