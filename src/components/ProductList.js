@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React , {useEffect} from 'react'
 import {useData} from '../contexts/DataContext'
+import Navbar from './Navbar'
 import ProductCard from './ProductCard'
 import '../styles/productList.css'
 const ProductList = () => {
@@ -19,14 +20,17 @@ const ProductList = () => {
             }
         })();
     }, [dispatch])
-    console.log(data)
     return (
         <div>
+        <Navbar />
+        <div className = 'product__Layout'>
+            <div></div>
             {loading ? <h3>Loading....</h3> : (
                     <div className = 'grid__row__6'>
                         {data.map(product => <ProductCard className = 'grid__col__6' product = {product} key = {product.id}/>)}
                     </div>
             )}
+        </div>
         </div>
     )
 }

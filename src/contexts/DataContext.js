@@ -1,4 +1,4 @@
-import {createContext , useContext , useReducer} from 'react'
+import {createContext , useContext , useReducer, useState} from 'react'
 import {dataReducer} from '../reducers/dataReducer'
 const DataContext = createContext();
 const initialState = {
@@ -9,8 +9,9 @@ const initialState = {
 }
 export const DataProvider = ({children}) => {
     const [state , dispatch] = useReducer(dataReducer , initialState)
+    const [sideBar , setSideBar] = useState(false)
     return (
-        <DataContext.Provider value = {{state , dispatch}}>
+        <DataContext.Provider value = {{state , dispatch , sideBar , setSideBar}}>
             {children}
         </DataContext.Provider>
     )

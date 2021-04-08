@@ -1,0 +1,14 @@
+.sidebar{
+    background-color: var(--white);
+    position: absolute;
+    width: 300px;
+    min-height: 100vh;
+    top: 0;
+    z-index: 500;
+}
+.show {
+    left: 0;
+}
+.hide {
+    left: -300px;
+}

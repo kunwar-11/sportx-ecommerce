@@ -1,5 +1,6 @@
 import React from 'react'
 import { useData } from '../contexts/DataContext'
+import {Link} from 'react-router-dom'
 import '../styles/productCard.css'
 const ProductCard = ({product}) => {
     const {state : {cart , wishList} , dispatch} = useData()
@@ -44,6 +45,7 @@ const ProductCard = ({product}) => {
     }
     //console.log(wishList)
     return (
+        <Link to = {`/productlist/${id}`}>
         <div className="card card__with__overlayButton card__shadow">
             <img className="image__responsive" src={image} alt="img" />
             <div className="card__body__container">
@@ -61,6 +63,7 @@ const ProductCard = ({product}) => {
             <i className={`heart fas fa-heart ${isWishListed(id)}`} onClick = {() => addToWishListHandler(id)}></i>
             {isInCart(id) ? <button className="btn btn-secondary">Go To Cart</button> : <button className="btn btn-primary" onClick = {()=> addToCartHandler(product)}>Add To Cart</button>}
         </div>
+        </Link>
     )
 }
 
