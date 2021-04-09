@@ -71,6 +71,7 @@ a{
     .navbar{
         padding-left: 1.2rem;
         padding-right: 1.2rem;
+        margin-bottom: 1rem;
     }
     .inputText {
         padding: 0.2rem;
