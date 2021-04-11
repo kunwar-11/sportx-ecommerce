@@ -1,21 +1,12 @@
 import React from 'react'
 import { useData } from '../contexts/DataContext'
+import {addToCartHandler , getRatingType , addToWishListHandler} from '../util'
 import {Link} from 'react-router-dom'
 import '../styles/productCard.css'
 const ProductCard = ({product}) => {
     const {state : {cart , wishList} , dispatch} = useData()
     const {productName , image , price , ratings , id} = product
-    const getRatingType = (rating) => {
-        if(rating >= 4) {
-            return 'rating-good'
-        }
-        else if(rating < 4 && rating >= 2) {
-            return 'rating-average'
-        }
-        else {
-            return 'rating-poor'
-        }
-    }
+   
     const isWishListed = (prodId) => {
         return wishList.reduce((acc , curr) => {
             if(curr.id === prodId) {
@@ -29,24 +20,15 @@ const ProductCard = ({product}) => {
          return 'wishlisted'
      }
      return ''*/
-    const addToCartHandler = (prod) => {
-        dispatch({type : 'ADD_TO_CART' , payload : prod})
-    }
-    const addToWishListHandler = (prodId) => {
-        if(wishList.some(curr => curr.id === prodId) === true) {
-            dispatch({type : 'REMOVE_FROM_WISHLIST' , payload : id})
-        }
-        else {
-            dispatch({type : 'ADD_TO_WISHLIST' , payload : product})
-        }
-    }
+   
+    
     const isInCart = (prodId) => {
        return cart.some(each => each.id === prodId) ? true : false
     }
     //console.log(wishList)
     return (
-        <Link to = {`/productlist/${id}`}>
         <div className="card card__with__overlayButton card__shadow">
+            <Link to = {`/productlist/${id}`}>
             <img className="image__responsive" src={image} alt="img" />
             <div className="card__body__container">
                 <h5 className="card__header">{productName}</h5>
@@ -60,10 +42,10 @@ const ProductCard = ({product}) => {
                     {price}
 		        </p>
             </div>
-            <i className={`heart fas fa-heart ${isWishListed(id)}`} onClick = {() => addToWishListHandler(id)}></i>
-            {isInCart(id) ? <button className="btn btn-secondary">Go To Cart</button> : <button className="btn btn-primary" onClick = {()=> addToCartHandler(product)}>Add To Cart</button>}
+            </Link>
+            <i className={`heart fas fa-heart ${isWishListed(id)}`} onClick = {() => addToWishListHandler(id , wishList , product , dispatch)}></i>
+            {isInCart(id) ? <button className="btn btn-secondary">Go To Cart</button> : <button className="btn btn-primary" onClick = {()=> addToCartHandler(product , dispatch)}>Add To Cart</button>}
         </div>
-        </Link>
     )
 }
 

@@ -44,6 +44,7 @@
 @media screen and (min-width : 769px) {
     .card {
         margin-bottom: 1rem;
+        max-height: 370px;
     }
 }
 @media screen and (max-width : 769px) {

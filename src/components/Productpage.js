@@ -1,6 +1,7 @@
 import React from 'react'
 import {useParams} from 'react-router-dom'
 import {useData} from '../contexts/DataContext'
+import {getRatingType , addToCartHandler} from '../util'
 import Navbar from './Navbar'
 import '../styles/productpage.css'
 import {Link} from 'react-router-dom'
@@ -11,20 +12,6 @@ const Productpage = () => {
     const getProductDetails = () => data.find(each => each.id === productId)
     const details = getProductDetails()
     console.log(details)
-    const getRatingType = (rating) => {
-        if(rating >= 4) {
-            return 'rating-good'
-        }
-        else if(rating < 4 && rating >= 2) {
-            return 'rating-average'
-        }
-        else {
-            return 'rating-poor'
-        }
-    }
-    const addToCartHandler = (prod) => {
-        dispatch({type : 'ADD_TO_CART' , payload : prod})
-    }
     const addToWishListHandler = () => {
             dispatch({type : 'ADD_TO_WISHLIST' , payload : details})
     }
@@ -45,9 +32,15 @@ const Productpage = () => {
             <div className="grid-row-6">
                 <div className="product-img">
                     <img src={details.image} alt="product-img" className="image__responsive"/>
+                    <div className="addbuttons desktop">
+                      {isWishListed(details.id) ? <Link to="/wishlist"><div className = 'buttons wishlist'>WISHLISTED</div></Link> : <div className = 'buttons wishlist' onClick = {() => addToWishListHandler()}>WISHLIST</div>}
+                      {isInCart(details.id)? <Link to = '/cart'><div className = 'buttons cart'>GO TO CART</div>
+                      </Link>
+                       : <div className = 'buttons cart' onClick = {() => addToCartHandler(details , dispatch)}>ADD TO CART</div>}
+            </div>
                 </div>
                 <div className="product-details">
-                    <h3>{details.productName}</h3>
+                    <h3 className = 'text-headings'>{details.productName}</h3>
                     <div className = {`rating-container ${getRatingType(details.ratings)}`}>
                     <small className = 'rating'>
                         {details.ratings}
@@ -63,16 +56,16 @@ const Productpage = () => {
                     </p>
                     <h4>Offers</h4>
                     <ul className = 'offers-list'>
-                    {details.offers.map(each => <li className = 'offers'>{each}</li>)}
+                    {details.offers.map(each => <li key = {each} className = 'offers'>{each}</li>)}
                      </ul>
                 </div>
             </div>
-            <div className="addbuttons">
+            <div className="addbuttons mobile">
                       {isWishListed(details.id) ? <Link to="/wishlist"><div className = 'buttons wishlist'>WISHLISTED</div></Link> : <div className = 'buttons wishlist' onClick = {() => addToWishListHandler()}>WISHLIST</div>}
                       {isInCart(details.id)? <Link to = '/cart'><div className = 'buttons cart'>GO TO CART</div>
                       </Link>
-                       : <div className = 'buttons cart' onClick = {() => addToCartHandler(details)}>ADD TO CART</div>}
-                    </div>
+                       : <div className = 'buttons cart' onClick = {() => addToCartHandler(details , dispatch)}>ADD TO CART</div>}
+            </div>
         </div>
     )
 }

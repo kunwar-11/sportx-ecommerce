@@ -1,0 +1,24 @@
+.filter__and__sort{
+    display: none;
+}
+@media screen and (min-width : 769px) {
+.filter__and__sort{
+    display: flex;
+    flex-direction: column;
+    margin-left: 2rem;
+    background-color: var(--white);
+    height:fit-content;
+    position: sticky;
+    top: 90.2px;
+    left: 0;
+}
+input{
+    margin-right: 1rem;
+}
+.labels {
+    margin: 1rem 0rem;
+}
+.clear-filters{
+    cursor: pointer;
+}
+}
