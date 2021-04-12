@@ -8,10 +8,8 @@ import {Link} from 'react-router-dom'
 const Productpage = () => {
     const {productId} = useParams()
     const {state : {data , wishList , cart} , dispatch} = useData() 
-    console.log(productId) 
     const getProductDetails = () => data.find(each => each.id === productId)
     const details = getProductDetails()
-    console.log(details)
     const addToWishListHandler = () => {
             dispatch({type : 'ADD_TO_WISHLIST' , payload : details})
     }
@@ -60,7 +58,7 @@ const Productpage = () => {
                      </ul>
                 </div>
             </div>
-            <div className="addbuttons mobile">
+            <div  className="addbuttons mobile">
                       {isWishListed(details.id) ? <Link to="/wishlist"><div className = 'buttons wishlist'>WISHLISTED</div></Link> : <div className = 'buttons wishlist' onClick = {() => addToWishListHandler()}>WISHLIST</div>}
                       {isInCart(details.id)? <Link to = '/cart'><div className = 'buttons cart'>GO TO CART</div>
                       </Link>

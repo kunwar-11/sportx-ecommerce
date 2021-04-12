@@ -50,6 +50,9 @@ a{
     justify-content: center;
     width: 50%;
 }
+.nav__pills{
+    margin-left: 2rem;
+}
 @media screen and (max-width : 769px){
     .mob{
         display: block;
@@ -63,6 +66,9 @@ a{
 @media screen and (max-width : 650px) {
     .navbrand__head{
         font-size: 1.3rem;
+    }
+    .badge-on-icon {
+        margin-left: 1rem;
     }
     .fa-search{
         font-size: 15px;
@@ -79,7 +85,7 @@ a{
     .desk {
         display: none;
     }
-    .mob{
-        font-size: 18px;
+    .nav__pills{
+        font-size: 1rem;
     }
 }

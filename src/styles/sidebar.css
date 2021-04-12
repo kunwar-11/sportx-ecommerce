@@ -1,14 +1,25 @@
 .sidebar{
     background-color: var(--white);
-    position: absolute;
+    position: fixed;
     width: 300px;
     min-height: 100vh;
-    top: 0;
+    top: 44.6px;
     z-index: 500;
+}
+.sidebar__brand__name{
+    padding: 0.5rem 1.2rem;
 }
 .show {
     left: 0;
 }
 .hide {
     left: -300px;
+}
+.sidebar__list{
+    padding-inline-start: 0px;
+}
+.sidebar__pills{
+    list-style: none;
+    padding: 1rem 3rem 0.5rem;
+    border-bottom: 0.5px solid rgb(202, 196, 196);
 }

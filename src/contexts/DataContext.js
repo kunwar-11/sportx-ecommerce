@@ -1,4 +1,5 @@
-import {createContext , useContext , useReducer, useState} from 'react'
+import {createContext , useContext , useReducer, useState , useEffect} from 'react'
+import axios from 'axios'
 import {dataReducer} from '../reducers/dataReducer'
 const DataContext = createContext();
 const initialState = {
@@ -14,6 +15,7 @@ const initialState = {
     isPriced : null,
     price : 0
 }
+
 const sortData = (data , sortBy) => {
     if(sortBy && sortBy === 'HIGH_TO_LOW') {
         return data.sort((a,b) => b['price'] - a['price'])
@@ -39,6 +41,20 @@ const priceFilter = (isPriced , data , price) => {
     return data
  }
 export const DataProvider = ({children}) => {
+    useEffect(()=>{
+        (async () => {
+            try {
+                dispatch({type : 'LOADING_STATUS' , payload : true});
+                const {data : {products}} = await axios.get('/api/products')
+                dispatch({type : 'DATA' , payload : products})
+            } catch (error) {
+                console.log(error)
+            }
+            finally {
+                dispatch({type : 'LOADING_STATUS' , payload : false});
+            }
+        })();
+    }, [])
     const [state , dispatch] = useReducer(dataReducer , initialState)
     const [sideBar , setSideBar] = useState(false)
    const sortedData = sortData(state.data , state.sortBy)

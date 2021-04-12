@@ -31,7 +31,7 @@ const WishList = () => {
                         {product.price}
                     </p>
                 </div>
-                <i className={`heart fas fa-heart ${isWishListed(product.id)}`} onClick = {() => dispatch({type : 'REMOVE_FROM_WISHLIST'})}></i>
+                <i className={`heart fas fa-heart ${isWishListed(product.id)}`} onClick = {() => dispatch({type : 'REMOVE_FROM_WISHLIST', payload : product.id})}></i>
                <button className="btn btn-primary" onClick = {() => dispatch({type : 'WISHLIST_TO_CART', payload : product})}>Add To Cart</button>
             </div>)
             )}</div>: <h1>your WISHLIST is emppty</h1>}

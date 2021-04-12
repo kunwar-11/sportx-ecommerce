@@ -48,7 +48,7 @@
 .text-dark{
     margin: 1rem 0rem;
 }
-@media screen and (min-width : 769px) {
+@media screen and (min-width : 768px) {
     .grid-row-6{
         grid-template-columns: 2fr 3fr;
         grid-column-gap: 1rem;
@@ -61,5 +61,8 @@
         display: grid;
         border: 0.5px solid rgb(221, 203, 203);
         margin: 1rem 0rem;
+    }
+    .image__responsive{
+        max-height: 500px;
     }
 }

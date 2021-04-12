@@ -1,17 +1,36 @@
-import React from 'react'
+import React , {useEffect} from 'react'
+import { Link } from 'react-router-dom'
 import {useData} from '../contexts/DataContext'
 import '../styles/sidebar.css'
 const Sidebar = () => {
-    const {sideBar} = useData()
+    const {sideBar , setSideBar} = useData()
+    useEffect(() => {
+        if(sideBar) {
+            document.body.style.overflow = 'hidden'
+        }
+        return () =>  document.body.style.overflow = 'unset'
+      }, [sideBar ])
     return (
         <div className = {`sidebar ${sideBar ? "show" : "hide"}`}>
-            <div className="sidebar__brand__name">
-                    <h2>sportX</h2>
-            </div>
-            <ul>
-                <li>Home</li>
-                <li>WishList</li>
-                <li>Cart</li>
+            <ul className = 'sidebar__list'>
+                <Link to = '/' onClick = {() => setSideBar(false)}>
+                    <li className = 'sidebar__pills'>Home</li>
+                </Link>
+                <Link to = '/productlist' onClick = {() => setSideBar(false)}>
+                <li className = 'sidebar__pills'>Product</li>
+                </Link>
+                <Link to = '/wishlist' onClick = {() => setSideBar(false)}>
+                <li className = 'sidebar__pills'>WishList</li>
+                </Link>
+                <Link to = '/cart' onClick = {() => setSideBar(false)}>
+                <li className = 'sidebar__pills'>Cart</li>
+                </Link>
+                <Link to = '/filters' onClick = {() => setSideBar(false)}>
+                <li className = 'sidebar__pills'>Filter</li>
+                </Link>
+                <Link to = '/sort' onClick = {() => setSideBar(false)}>
+                <li className = 'sidebar__pills'>Sort</li>
+                </Link>
             </ul>
         </div>
     )
