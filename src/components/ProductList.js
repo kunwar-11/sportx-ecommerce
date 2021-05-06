@@ -4,6 +4,7 @@ import Navbar from './Navbar'
 import ProductCard from './ProductCard'
 import '../styles/productList.css'
 import FilterAndSort from './FilterAndSort'
+import {Link} from 'react-router-dom'
 const ProductList = () => {
     const {state : {loading} , priceFilteredData} = useData()
    
@@ -18,6 +19,11 @@ const ProductList = () => {
                     </div>
             )}
         </div>
+        <div  className="addbuttons m">
+                      <Link to="/filters"><div className = 'buttons'>FILTER</div></Link>
+                      <Link to = '/sort'><div className = 'buttons cart'>SORT</div>
+                      </Link>
+            </div>
         </div>
     )
 }

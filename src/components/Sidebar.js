@@ -25,12 +25,6 @@ const Sidebar = () => {
                 <Link to = '/cart' onClick = {() => setSideBar(false)}>
                 <li className = 'sidebar__pills'>Cart</li>
                 </Link>
-                <Link to = '/filters' onClick = {() => setSideBar(false)}>
-                <li className = 'sidebar__pills'>Filter</li>
-                </Link>
-                <Link to = '/sort' onClick = {() => setSideBar(false)}>
-                <li className = 'sidebar__pills'>Sort</li>
-                </Link>
             </ul>
         </div>
     )

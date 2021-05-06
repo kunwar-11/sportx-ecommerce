@@ -2,8 +2,8 @@
     background-color: var(--white);
     position: fixed;
     width: 300px;
-    min-height: 100vh;
-    top: 44.6px;
+    height: 100%;
+    top: 0;
     z-index: 500;
 }
 .sidebar__brand__name{
