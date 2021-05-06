@@ -1,0 +1,28 @@
+.login-form{
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    max-width: 280px;
+    padding: 1.5rem 1rem;
+    position: relative;
+    top: 9rem;
+    border-radius: 0.5rem;
+}
+.input > input {
+    margin: 1rem 0rem ;
+}
+@media  screen and (min-width : 374px) {
+    .login-form {
+        max-width: 340px;
+    }
+}
+@media  screen and (min-width : 424px) {
+    .login-form {
+        max-width: 390px;
+    }
+}
+@media  screen and (min-width : 767px) {
+    .login-form {
+        max-width: 650px;
+    }
+}

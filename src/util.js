@@ -1,3 +1,5 @@
+import {Navigate, Route} from 'react-router-dom'
+import {useAuth} from './contexts/AuthContext'
 export  const getRatingType = (rating) => {
     if(rating >= 4) {
         return 'rating-good'
@@ -19,4 +21,12 @@ export const addToWishListHandler = (prodId , wishList , product , dispatch) => 
     else {
         dispatch({type : 'ADD_TO_WISHLIST' , payload : product})
     }
+}
+
+export const PrivateRoute = ({path , ...rest}) => {
+    const {login} = useAuth()
+    if(login) {
+        return <Route {...rest} path = {path} />
+    }
+    return <Navigate to = '/login' replace state = {{from : path}} />
 }
