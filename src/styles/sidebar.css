@@ -23,3 +23,8 @@
     padding: 1rem 3rem 0.5rem;
     border-bottom: 0.5px solid rgb(202, 196, 196);
 }
+.sidebar__head{
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-decoration: wavy;
+}  

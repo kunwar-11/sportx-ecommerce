@@ -1,7 +1,7 @@
 import React , {useState} from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-
+import {useNavigate} from 'react-router-dom'
 const SignUp = () => {
     const [user , setUser] = useState({
         FirstName : '',
@@ -9,7 +9,8 @@ const SignUp = () => {
         Email : '',
         password : ''
     })
-    const {users} = useAuth()
+    const navigate = useNavigate()
+    const {setUsers} = useAuth()
     const [error , setError] = useState({})
     const formValidation = () => {
         const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -58,10 +59,9 @@ const SignUp = () => {
     const signupHandler = (e) => {
         e.preventDefault();
         if(formValidation()) {
-            console.log(user)
-            users.push(user)
+            setUsers(prev => prev.concat(user))
+            navigate('/login')
         }
-        console.log(users , typeof(users))
     }
     return (
         <form className = 'login-form card__shadow'>

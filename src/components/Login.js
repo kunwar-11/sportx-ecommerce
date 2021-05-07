@@ -20,6 +20,8 @@ const Login = () => {
                 setError(prev => ({...prev , userNameError : ''}))
                 if(password === element.password) {
                     setLogin(true)
+                    localStorage?.setItem('userLoggedIn', JSON.stringify({login : true}))
+                    localStorage?.setItem('userName' , JSON.stringify({name : element.FirstName}))
                     navigate(state?.from ? state.from : '/')
                     setError(prev => ({...prev , passwordError : ''}))
                     return 
