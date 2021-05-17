@@ -15,9 +15,8 @@ import { useAuth } from './contexts/AuthContext'
 import axios from 'axios'
 import { useData } from './contexts/DataContext'
 function App() {
-  const {login , setUsers} = useAuth()
+  const {login , setUsers , userId} = useAuth()
   const {dispatch} = useData()
-    const {userId} = JSON.parse(localStorage?.getItem('userId'))
   useEffect(()=>{
     (async () => {
         try {
