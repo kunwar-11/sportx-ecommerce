@@ -5,7 +5,7 @@ import {useData} from '../contexts/DataContext'
 import '../styles/sidebar.css'
 const Sidebar = () => {
     const {sideBar , setSideBar} = useData()
-    const {login , name , setLogin , setName} = useAuth()
+    const {login , name , setLogin , setUserName} = useAuth()
     const navigate = useNavigate()
     useEffect(() => {
         if(sideBar) {
@@ -17,8 +17,9 @@ const Sidebar = () => {
           setSideBar(false)
           localStorage?.removeItem('userLoggedIn')
           localStorage?.removeItem('userName')
+          localStorage?.removeItem('userId')
           setLogin(false)
-          setName('')
+          setUserName('')
           navigate('/')
       }
     return (
