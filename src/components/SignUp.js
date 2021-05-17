@@ -2,8 +2,9 @@ import React , {useState} from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import {useNavigate} from 'react-router-dom'
+import axios from 'axios'
 const SignUp = () => {
-    const [user , setUser] = useState({
+    const [newUser , setNewUser] = useState({
         FirstName : '',
         LastName : '',
         Email : '',
@@ -17,21 +18,21 @@ const SignUp = () => {
         
         const passRe = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
         let valid = true;
-        if(user.FirstName.trim()){
+        if(newUser.FirstName.trim()){
             setError(prev => ({...prev , FirstName_error : ''}))
         } 
         else {
             setError(prev => ({...prev , FirstName_error : 'Enter First Name!'}))
             valid = false
         }
-        if(user.LastName.trim()){ 
+        if(newUser.LastName.trim()){ 
             setError(prev => ({...prev , LastName_error : ''}))
         } else {
             setError(prev => ({...prev , LastName_error : 'Enter Last Name!'}))
             valid = false
         }
-        if(user.Email.trim()){
-            if(re.test(user.Email)){
+        if(newUser.Email.trim()){
+            if(re.test(newUser.Email)){
                 setError(prev => ({...prev , Email_error : ''})) 
              }
              else {
@@ -42,8 +43,8 @@ const SignUp = () => {
         else {
             setError(prev => ({...prev , Email_error : 'Enter Email!'}))
         }    
-        if(user.password.trim()){
-            if(passRe.test(user.password)){
+        if(newUser.password.trim()){
+            if(passRe.test(newUser.password)){
                 setError(prev => ({...prev , password_error : ''})) 
             } else {
                 setError(prev => ({...prev , password_error : 'Password should have Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character'}))
@@ -56,30 +57,46 @@ const SignUp = () => {
         }
         return valid
     }
-    const signupHandler = (e) => {
+    const signupHandler = async (e) => {
         e.preventDefault();
-        if(formValidation()) {
-            setUsers(prev => prev.concat(user))
-            navigate('/login')
+        try {
+            if(formValidation()) {
+                const {data : {user}} = await axios.post('https://intense-scrubland-09454.herokuapp.com/user/signup' ,
+                 {
+                    userData : {
+                        firstName: newUser.FirstName,
+                        lastName: newUser.LastName,
+                        email: newUser.Email,
+                        password: newUser.password
+                    }
+                }
+            )
+                console.log(user)
+                setUsers(prev => prev.concat(user))
+                navigate('/login')
+            }
+        } catch (error) {
+            
         }
+        
     }
     return (
         <form className = 'login-form card__shadow'>
             <h3 style = {{textAlign : 'center'}}>Sign Up</h3>
             <div className="input">
-                <input className = 'inputText' type="text" placeholder = 'enter FirstName' value = {user.FirstName} onChange = {(e) => setUser(prev => ({...prev , FirstName : e.target.value}))}/>
+                <input className = 'inputText' type="text" placeholder = 'enter FirstName' value = {newUser.FirstName} onChange = {(e) => setNewUser(prev => ({...prev , FirstName : e.target.value}))}/>
                 <small className={`error`}>{error.FirstName_error}</small>
             </div>
             <div className="input">
-                <input className = 'inputText' type="text" placeholder = 'enter LastName' value = {user.LastName} onChange = {(e) => setUser(prev => ({...prev , LastName : e.target.value}))}/>
+                <input className = 'inputText' type="text" placeholder = 'enter LastName' value = {newUser.LastName} onChange = {(e) => setNewUser(prev => ({...prev , LastName : e.target.value}))}/>
                 <small className={`error`}>{error.LastName_error}</small>
             </div>
             <div className="input">
-                <input className = 'inputText' type="text" placeholder = 'enter email' value = {user.Email} onChange = {(e) => setUser(prev => ({...prev , Email : e.target.value}))}/>
+                <input className = 'inputText' type="text" placeholder = 'enter email' value = {newUser.Email} onChange = {(e) => setNewUser(prev => ({...prev , Email : e.target.value}))}/>
                 <small className={`error`}>{error.Email_error}</small>
             </div>
             <div className="input">  
-                <input className = 'inputText' type="password" placeholder = 'enter password' value = {user.password} onChange = {(e) => setUser(prev => ({...prev , password : e.target.value}))}/>
+                <input className = 'inputText' type="password" placeholder = 'enter password' value = {newUser.password} onChange = {(e) => setNewUser(prev => ({...prev , password : e.target.value}))}/>
                 <small className={`error`}>{error.password_error}</small>
             </div>
             <button className="btn btn-primary" onClick = {(e)=> signupHandler(e)}>Sign Up</button>

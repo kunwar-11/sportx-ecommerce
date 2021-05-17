@@ -1,16 +1,10 @@
+
 import { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
-    const [users , setUsers] = useState([
-        {
-            FirstName : 'admin',
-            LastName : 'admin',
-            Email : 'admin@gmail.com',
-            password : 'admin'
-        }
-    ])
+    const [users , setUsers] = useState(null)
     const [login , setLogin] = useState(JSON.parse(localStorage?.getItem('userLoggedIn')) || false)
     const [name , setName]  = useState(JSON.parse(localStorage?.getItem('userName')) || '')
     useEffect(() => {

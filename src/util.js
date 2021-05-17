@@ -11,8 +11,12 @@ export  const getRatingType = (rating) => {
         return 'rating-poor'
     }
 }
-export  const addToCartHandler = (prod , dispatch) => {
-    dispatch({type : 'ADD_TO_CART' , payload : prod})
+export  const addToCartHandler = async (prod , dispatch) => {
+    try {
+        dispatch({type : 'ADD_TO_CART' , payload : prod})
+    } catch (error) {
+        
+    }
 }
 export const addToWishListHandler = (prodId , wishList , product , dispatch) => {
     if(wishList.some(curr => curr.id === prodId) === true) {

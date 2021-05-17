@@ -1,38 +1,45 @@
-import React from 'react'
+import React , {useEffect, useState} from 'react'
 import {useParams} from 'react-router-dom'
 import {useData} from '../contexts/DataContext'
 import {getRatingType , addToCartHandler} from '../util'
 import Navbar from './Navbar'
 import '../styles/productpage.css'
 import {Link} from 'react-router-dom'
+import axios from 'axios'
 const Productpage = () => {
     const {productId} = useParams()
-    const {state : {data , wishList , cart} , dispatch} = useData() 
-    const getProductDetails = () => data.find(each => each.id === productId)
-    const details = getProductDetails()
+    const {state : {cart , wishList} , dispatch} = useData() 
     const addToWishListHandler = () => {
             dispatch({type : 'ADD_TO_WISHLIST' , payload : details})
     }
     const isWishListed = (prodId) => {
         return wishList.reduce((acc , curr) => {
-            if(curr.id === prodId) {
+            if(curr._id === prodId) {
                 return true
             }
             return acc
         } , false)
     }
     const isInCart = (prodId) => {
-        return cart.some(each => each.id === prodId) ? true : false
-     }
+        return cart.some(each => each._id === prodId) ? true : false
+      }
+    const [details , setDetails] = useState(null)
+     useEffect(() => {
+         (async () => {
+            const {data : {product}} = await axios.get(`https://intense-scrubland-09454.herokuapp.com/products/${productId}`)
+            setDetails(product)
+         })()
+     },[productId])
     return (
         <div className = 'productdetails'>
             <Navbar />
+            {details &&  <> 
             <div className="grid-row-6">
                 <div className="product-img">
                     <img src={details.image} alt="product-img" className="image__responsive"/>
                     <div className="addbuttons desktop">
-                      {isWishListed(details.id) ? <Link to="/wishlist"><div className = 'buttons wishlist'>WISHLISTED</div></Link> : <div className = 'buttons wishlist' onClick = {() => addToWishListHandler()}>WISHLIST</div>}
-                      {isInCart(details.id)? <Link to = '/cart'><div className = 'buttons cart'>GO TO CART</div>
+                      {isWishListed(details._id) ? <Link to="/wishlist"><div className = 'buttons wishlist'>WISHLISTED</div></Link> : <div className = 'buttons wishlist' onClick = {() => addToWishListHandler()}>WISHLIST</div>}
+                      {isInCart(details._id)? <Link to = '/cart'><div className = 'buttons cart'>GO TO CART</div>
                       </Link>
                        : <div className = 'buttons cart' onClick = {() => addToCartHandler(details , dispatch)}>ADD TO CART</div>}
             </div>
@@ -64,6 +71,8 @@ const Productpage = () => {
                       </Link>
                        : <div className = 'buttons cart' onClick = {() => addToCartHandler(details , dispatch)}>ADD TO CART</div>}
             </div>
+        </>    
+        }
         </div>
     )
 }

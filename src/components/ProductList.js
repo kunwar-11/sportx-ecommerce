@@ -15,7 +15,7 @@ const ProductList = () => {
             <FilterAndSort />
             {loading ? <h3>Loading....</h3> : (
                     <div className = 'grid__row__6'>
-                        {priceFilteredData.map(product => <ProductCard className = 'grid__col__6' product = {product} key = {product.id}/>)}
+                        {priceFilteredData.map(product => <ProductCard className = 'grid__col__6' product = {product} key = {product._id}/>)}
                     </div>
             )}
         </div>

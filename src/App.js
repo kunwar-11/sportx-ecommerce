@@ -1,4 +1,4 @@
-import React from 'react'
+import React , {useEffect} from 'react'
 import ProductList from './components/ProductList'
 import WishList from './components/WishList'
 import Home from './components/Home'
@@ -11,7 +11,55 @@ import Filter from './components/Filter'
 import Sort from './components/Sort'
 import SignUp from './components/SignUp'
 import {PrivateRoute} from './util'
+import { useAuth } from './contexts/AuthContext'
+import axios from 'axios'
+import { useData } from './contexts/DataContext'
 function App() {
+  const {login , setUsers} = useAuth()
+  const {dispatch} = useData()
+    const {userId} = JSON.parse(localStorage?.getItem('userId'))
+  useEffect(()=>{
+    (async () => {
+        try {
+            dispatch({type : 'LOADING_STATUS' , payload : true});
+            const {data : {products}} = await axios.get('https://intense-scrubland-09454.herokuapp.com/products')
+            dispatch({type : 'DATA' , payload : products})
+        } catch (error) {
+            console.log(error)
+        }
+        finally {
+            dispatch({type : 'LOADING_STATUS' , payload : false});
+        }
+    })(); 
+},[dispatch])
+useEffect (() => {
+        (async () => {
+            if(login) {
+                try {
+                    const {data : {user}} = await axios.get('https://intense-scrubland-09454.herokuapp.com/user')
+                    setUsers(user)
+                } catch (error) {
+                    
+                }
+            }
+        })()
+},[login , setUsers])
+useEffect(() => {
+  (async () => {
+    try {
+      const {data : {cart}} = await axios.get(`https://intense-scrubland-09454.herokuapp.com/cart/${userId}`)
+      dispatch({type : 'LOAD_CART' , payload : cart})
+  } catch (error) {
+      
+  }
+  try {
+      const {data : {wishlist}} = await axios.get(`https://intense-scrubland-09454.herokuapp.com/wishlist/${userId}`)
+      dispatch({type : 'LOAD_WISHLIST' , payload : wishlist})
+  } catch (error) {
+      
+  }
+  })()
+},[userId , dispatch])
   return (
     <div className="App">
         <Routes>

@@ -3,10 +3,8 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import {DataProvider} from './contexts/DataContext'
 import {AuthProvider} from './contexts/AuthContext'
-import createMockServer from './server/server'
 import {BrowserRouter as Router} from 'react-router-dom'
 import reportWebVitals from './reportWebVitals';
-createMockServer()
 ReactDOM.render(
   <React.StrictMode>
     <Router>

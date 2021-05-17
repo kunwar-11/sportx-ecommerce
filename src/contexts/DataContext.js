@@ -1,5 +1,4 @@
-import {createContext , useContext , useReducer, useState , useEffect} from 'react'
-import axios from 'axios'
+import {createContext , useContext , useReducer, useState} from 'react'
 import {dataReducer} from '../reducers/dataReducer'
 const DataContext = createContext();
 const initialState = {
@@ -41,26 +40,14 @@ const priceFilter = (isPriced , data , price) => {
     return data
  }
 export const DataProvider = ({children}) => {
-    useEffect(()=>{
-        (async () => {
-            try {
-                dispatch({type : 'LOADING_STATUS' , payload : true});
-                const {data : {products}} = await axios.get('/api/products')
-                dispatch({type : 'DATA' , payload : products})
-            } catch (error) {
-                console.log(error)
-            }
-            finally {
-                dispatch({type : 'LOADING_STATUS' , payload : false});
-            }
-        })();
-    }, [])
+    
     const [state , dispatch] = useReducer(dataReducer , initialState)
     const [sideBar , setSideBar] = useState(false)
-   const sortedData = sortData(state.data , state.sortBy)
-    const filteredData = filterData(sortedData , {includeOutOfStock : state.showInventory , fastDeliveryOnly : state.fastDelivery})
-    const ratedData = ratingData(state.isRated ,filteredData , state.rating)
-    const priceFilteredData = priceFilter(state.isPriced , ratedData , state.price)
+    const sortedData = sortData(state.data , state.sortBy)
+     const filteredData = filterData(sortedData , {includeOutOfStock : state.showInventory , fastDeliveryOnly : state.fastDelivery})
+     const ratedData = ratingData(state.isRated ,filteredData , state.rating)
+     const priceFilteredData = priceFilter(state.isPriced , ratedData , state.price)
+   
     return (
         <DataContext.Provider value = {{state , dispatch , sideBar , setSideBar , priceFilteredData}}>
             {children}

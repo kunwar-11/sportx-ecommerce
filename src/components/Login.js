@@ -3,9 +3,10 @@ import {useAuth} from '../contexts/AuthContext'
 import {Link, useLocation, useNavigate} from 'react-router-dom'
 import '../styles/login.css'
 import Navbar from './Navbar'
+import axios from 'axios'
 const Login = () => {
     const {setLogin , users} = useAuth()
-    const [userName , setUserName] = useState('')
+    const [name , setName] = useState('')
     const [password , setPassword] = useState('')
     const [error , setError] = useState({
         userNameError : '',
@@ -13,26 +14,37 @@ const Login = () => {
     })
     const navigate = useNavigate()
     const {state} = useLocation()
-    const loginHandler = (e) => {
+    console.log(users)
+    const loginHandler = async (e) => {
         e.preventDefault()
-        users.forEach(element => {
-            if(userName === element.Email) {
-                setError(prev => ({...prev , userNameError : ''}))
-                if(password === element.password) {
-                    setLogin(true)
-                    localStorage?.setItem('userLoggedIn', JSON.stringify({login : true}))
-                    localStorage?.setItem('userName' , JSON.stringify({name : element.FirstName}))
-                    navigate(state?.from ? state.from : '/')
-                    setError(prev => ({...prev , passwordError : ''}))
-                    return 
+        try {
+            const {data : {userName , userId}} = await axios.post('https://intense-scrubland-09454.herokuapp.com/user/login' , {
+                userEmail : name,
+                password : password
+            })
+            users.forEach(element => {
+                if(name === element.email) {
+                    setError(prev => ({...prev , userNameError : ''}))
+                    if(password === element.password) {
+                        setLogin(true)
+                        localStorage?.setItem('userLoggedIn', JSON.stringify({login : true}))
+                        localStorage?.setItem('userName' , JSON.stringify({name : userName}))
+                        localStorage?.setItem('userId' , JSON.stringify({userId : userId}))
+                        navigate(state?.from ? state.from : '/')
+                        setError(prev => ({...prev , passwordError : ''}))
+                        return 
+                    }
+                    setError(prev => ({...prev , passwordError : 'incorrect password'}))
                 }
-                setError(prev => ({...prev , passwordError : 'incorrect password'}))
-            }
-            else {
-                setError(prev => ({...prev , userNameError : 'username not found'}))
-            }
-            console.log({error})
-        });
+                else {
+                    setError(prev => ({...prev , userNameError : 'username not found'}))
+                }
+                console.log({error})
+            });
+        } catch (error) {
+            
+        }
+      
        
     }
     return (
@@ -41,7 +53,7 @@ const Login = () => {
         <form className = 'login-form card__shadow'>
             <h3 style = {{textAlign : 'center'}}>Login</h3>
             <div className="input">
-                <input className = 'inputText' type="text" placeholder = 'enter Email' value = {userName}  onChange = {(e) => setUserName(e.target.value)}/>
+                <input className = 'inputText' type="text" placeholder = 'enter Email' value = {name}  onChange = {(e) => setName(e.target.value)}/>
                 <small className={`error`}>{error.userNameError}</small>
             </div>
             <div className="input">  
