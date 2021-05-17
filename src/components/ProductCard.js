@@ -9,7 +9,7 @@ const ProductCard = ({product}) => {
    
     const isWishListed = (prodId) => {
         return wishList.reduce((acc , curr) => {
-            if(curr.id === prodId) {
+            if(curr._id === prodId) {
                 return 'wishlisted'
             }
             return acc
@@ -23,7 +23,7 @@ const ProductCard = ({product}) => {
    
     
     const isInCart = (prodId) => {
-       return cart.some(each => each.id === prodId) ? true : false
+       return cart.some(each => each._id === prodId) ? true : false
     }
     //console.log(wishList)
     return (
