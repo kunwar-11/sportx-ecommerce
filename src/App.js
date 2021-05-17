@@ -45,6 +45,7 @@ useEffect (() => {
 },[login , setUsers])
 useEffect(() => {
   (async () => {
+    if(login) {
     try {
       const {data : {cart}} = await axios.get(`https://intense-scrubland-09454.herokuapp.com/cart/${userId}`)
       dispatch({type : 'LOAD_CART' , payload : cart})
@@ -56,6 +57,7 @@ useEffect(() => {
       dispatch({type : 'LOAD_WISHLIST' , payload : wishlist})
   } catch (error) {
       
+  }
   }
   })()
 },[userId , dispatch])
