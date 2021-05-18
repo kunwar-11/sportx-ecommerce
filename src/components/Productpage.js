@@ -9,7 +9,8 @@ import axios from 'axios'
 const Productpage = () => {
     const {productId} = useParams()
     const {state : {cart , wishList} , dispatch} = useData() 
-    const addToWishListHandler = () => {
+    const addToWishListHandler = async () => {
+            
             dispatch({type : 'ADD_TO_WISHLIST' , payload : details})
     }
     const isWishListed = (prodId) => {
@@ -71,8 +72,8 @@ const Productpage = () => {
                 </div>
                 </div>                 
             <div  className="addbuttons mobile">
-                      {isWishListed(details.id) ? <Link to="/wishlist"><div className = 'buttons wishlist'>WISHLISTED</div></Link> : <div className = 'buttons wishlist' onClick = {() => addToWishListHandler()}>WISHLIST</div>}
-                      {isInCart(details.id)? <Link to = '/cart'><div className = 'buttons cart'>GO TO CART</div>
+                      {isWishListed(details._id) ? <Link to="/wishlist"><div className = 'buttons wishlist'>WISHLISTED</div></Link> : <div className = 'buttons wishlist' onClick = {() => addToWishListHandler()}>WISHLIST</div>}
+                      {isInCart(details._id)? <Link to = '/cart'><div className = 'buttons cart'>GO TO CART</div>
                       </Link>
                        : <div className = 'buttons cart' onClick = {() => addToCartHandler(details , dispatch)}>ADD TO CART</div>}
             </div>

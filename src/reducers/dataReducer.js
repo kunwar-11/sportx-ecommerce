@@ -9,23 +9,23 @@ export const dataReducer = (state , action) => {
         case "LOAD_WISHLIST" : 
             return {...state , wishList : action.payload}
         case 'ADD_TO_CART' :   return {...state , cart : [...state.cart , action.payload]}
-        case 'REMOVE_FROM_CART' : return {...state , cart : state.cart.filter(each => each.id !== action.payload)}
+        case 'REMOVE_FROM_CART' : return {...state , cart : state.cart.filter(each => each._id !== action.payload)}
         case 'ADD_TO_WISHLIST' : 
             return {...state , wishList : [...state.wishList , action.payload]}
         case 'REMOVE_FROM_WISHLIST' : 
-            return {...state , wishList : state.wishList.filter(each => each.id !== action.payload)}
+            return {...state , wishList : state.wishList.filter(each => each._id !== action.payload)}
         case 'INCREMENT' : 
             return {...state , cart : state.cart.map((each) => {
-                return each.id === action.payload ? {...each , qty : each.qty+1} : each
+                return each._id === action.payload ? {...each , qty : each.qty+1} : each
             })}
         case 'DECREMENT' : 
         return {...state , cart : state.cart.map((each) => {
-            return each.id === action.payload ? {...each , qty : each.qty-1} : each
+            return each._id === action.payload ? {...each , qty : each.qty-1} : each
         }).filter(each => each.qty > 0)}
-        case "WISHLIST_TO_CART" : return {...state , cart : state.cart.some(each => each.id === action.payload.id) === true ? state.cart.map((each) => {
+        case "WISHLIST_TO_CART" : return {...state , cart : state.cart.some(each => each._id === action.payload._id) === true ? state.cart.map((each) => {
             return each.id === action.payload.id ? {...each , qty : each.qty+1} : each
         }) : [...state.cart , {...action.payload , qty : 1}] , wishList : state.wishList.filter(each => each.id !== action.payload.id)}
-        case  'CART_TO_WISHLIST' : return {...state, cart : state.cart.filter(each => each.id !== action.payload.id) , wishList : [...state.wishList , action.payload]}
+        case  'CART_TO_WISHLIST' : return {...state, cart : state.cart.filter(each => each._id !== action.payload._id) , wishList : [...state.wishList , action.payload]}
         case 'SORT' : return {...state , sortBy : action.payload}
         case 'TOGGLE_INVENTORY' : return{...state , showInventory : !state.showInventory}
         case 'TOGGLE_DELIVERY' : return {...state , fastDelivery : !state.fastDelivery}

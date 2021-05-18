@@ -1,12 +1,11 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import {useData} from '../contexts/DataContext'
 import Navbar from '../components/Navbar'
 import {Link} from 'react-router-dom'
 import '../styles/cart.css'
-import axios from 'axios'
 const Cart = () => {
     const {state , dispatch} = useData()
-    const id = JSON.parse(localStorage?.getItem('userId')).id
+   
     const getTotalPrice = (price , qty) => {
         return price*qty
     }
@@ -22,25 +21,13 @@ const Cart = () => {
     }
     const isWishListed = (prodId) => {
         return state.wishList.reduce((acc , curr) => {
-            if(curr.id === prodId) {
+            if(curr._id === prodId) {
                 return true
             }
             return acc
         } , false)
     }
-    useEffect(() => {
-        if(id){
-        (async () => {
-            try {
-                const {data : {cart}} = await axios.get(`https://intense-scrubland-09454.herokuapp.com/cart/${id}`)
-                console.log(cart)
-                dispatch({type : 'LOAD_CART' , payload : cart})
-            } catch (error) {
-                console.log(error)
-            }          
-        })()
-    }
-    },[dispatch , id])
+    
     return (
         <div>
             <Navbar />

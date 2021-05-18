@@ -9,12 +9,10 @@ const ProductCard = ({product}) => {
     const {productName , image , price , ratings , _id} = product
     const {userId} = useAuth()
     const isWishListed = (prodId) => {
-        return wishList.reduce((acc , curr) => {
-            if(curr._id === prodId) {
-                return 'wishlisted'
-            }
-            return acc
-        } , '')
+        if(wishList.some(curr => curr._id === prodId) === true) {
+            return 'wishlisted'
+        }
+        return ''
     }
     //  can be done using .some too => 
     /*if(wishList.some(curr => curr.id === prodId) === true) {
@@ -44,7 +42,7 @@ const ProductCard = ({product}) => {
 		        </p>
             </div>
             </Link>
-            <i className={`heart fas fa-heart ${isWishListed(_id)}`} onClick = {() => addToWishListHandler(_id , wishList , product , dispatch)}></i>
+            <i className={`heart fas fa-heart ${isWishListed(_id)}`} onClick = {() => addToWishListHandler(_id , wishList  , dispatch , userId)}></i>
             {isInCart(_id) ?<Link to = '/cart'><button className="btn btn-secondary">Go To Cart</button></Link> : <button className="btn btn-primary" onClick = {()=> addToCartHandler(_id , dispatch , userId)}>Add To Cart</button>}
         </div>
     )

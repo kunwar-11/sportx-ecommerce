@@ -25,21 +25,28 @@ export  const addToCartHandler = async (productId , dispatch , userId) => {
     }
  } 
 }
-export const addToWishListHandler = (prodId , wishList , dispatch) => {
-    // if(wishList.some(curr => curr._id === prodId) === true) {
-    //     dispatch({type : 'REMOVE_FROM_WISHLIST' , payload : prodId})
-    // }
-    // else {
-    //     const userID = JSON.parse(localStorage?.getItem('userId'))
-    //     if(userID) {
-    //     try {
-    //         const {data : {product}} = axios.post(`https://intense-scrubland-09454.herokuapp.com/cart/${userID.userId}` , {productId : prodId})
-    //         dispatch({type : 'ADD_TO_WISHLIST' , payload : product})
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // } 
-    // }
+export const addToWishListHandler = async (prodId , wishList , dispatch , userId) => {
+    if(wishList.some(curr => curr._id === prodId) === true) {
+        try {
+            const {data : {success , product}} = await axios.delete(`https://intense-scrubland-09454.herokuapp.com/wishlist/${userId}/${prodId}`)
+            console.log(product._id)
+            if(success){
+                dispatch({type : 'REMOVE_FROM_WISHLIST' , payload : product._id})
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    else {
+        if(userId) {
+        try {
+            const {data : {product}} = await axios.post(`https://intense-scrubland-09454.herokuapp.com/wishlist/${userId}` , {productId : prodId})
+            dispatch({type : 'ADD_TO_WISHLIST' , payload : product})
+        } catch (error) {
+            console.log(error)
+        }
+    } 
+    }
 }
 
 export const PrivateRoute = ({path , ...rest}) => {
