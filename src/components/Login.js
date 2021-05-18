@@ -32,7 +32,7 @@ const Login = () => {
                         setUserName(userName)
                         localStorage?.setItem('userName' , JSON.stringify({name : userName}))
                         console.log(userId)
-                        localStorage?.setItem('userId' , JSON.stringify({id : userId}))
+                        localStorage?.setItem('userId' , userId)
                         setUserId(userId)
                         navigate(state?.from ? state.from : '/')
                         setError(prev => ({...prev , passwordError : ''}))
