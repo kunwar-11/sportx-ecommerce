@@ -38,7 +38,7 @@ const priceFilter = (isPriced , data , price) => {
         return data.filter(each => each.price >= price )
     }
     return data
- }
+}
 export const DataProvider = ({children}) => {
     
     const [state , dispatch] = useReducer(dataReducer , initialState)
@@ -47,7 +47,7 @@ export const DataProvider = ({children}) => {
      const filteredData = filterData(sortedData , {includeOutOfStock : state.showInventory , fastDeliveryOnly : state.fastDelivery})
      const ratedData = ratingData(state.isRated ,filteredData , state.rating)
      const priceFilteredData = priceFilter(state.isPriced , ratedData , state.price)
-   
+    
     return (
         <DataContext.Provider value = {{state , dispatch , sideBar , setSideBar , priceFilteredData}}>
             {children}

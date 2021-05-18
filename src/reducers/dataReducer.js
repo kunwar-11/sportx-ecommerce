@@ -8,7 +8,7 @@ export const dataReducer = (state , action) => {
             return {...state , cart : action.payload}
         case "LOAD_WISHLIST" : 
             return {...state , wishList : action.payload}
-        case 'ADD_TO_CART' :   return {...state , cart : [...state.cart , {...action.payload , qty : 1}]}
+        case 'ADD_TO_CART' :   return {...state , cart : [...state.cart , action.payload]}
         case 'REMOVE_FROM_CART' : return {...state , cart : state.cart.filter(each => each.id !== action.payload)}
         case 'ADD_TO_WISHLIST' : 
             return {...state , wishList : [...state.wishList , action.payload]}

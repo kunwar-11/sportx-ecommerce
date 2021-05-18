@@ -1,3 +1,4 @@
+import axios from 'axios'
 import {Navigate, Route} from 'react-router-dom'
 import {useAuth} from './contexts/AuthContext'
 export  const getRatingType = (rating) => {
@@ -11,20 +12,34 @@ export  const getRatingType = (rating) => {
         return 'rating-poor'
     }
 }
-export  const addToCartHandler = async (prod , dispatch) => {
+export  const addToCartHandler = async (productId , dispatch , userId) => {
+    if(userId) {
     try {
-        dispatch({type : 'ADD_TO_CART' , payload : prod})
+        const {data : {product , success}} = await axios.post(`https://intense-scrubland-09454.herokuapp.com/cart/${userId}` , {productId : productId})
+        console.log(product)
+        if(success) {
+            dispatch({type : 'ADD_TO_CART' , payload : product})
+        }
     } catch (error) {
-        
+        console.log(error)
     }
+ } 
 }
-export const addToWishListHandler = (prodId , wishList , product , dispatch) => {
-    if(wishList.some(curr => curr.id === prodId) === true) {
-        dispatch({type : 'REMOVE_FROM_WISHLIST' , payload : prodId})
-    }
-    else {
-        dispatch({type : 'ADD_TO_WISHLIST' , payload : product})
-    }
+export const addToWishListHandler = (prodId , wishList , dispatch) => {
+    // if(wishList.some(curr => curr._id === prodId) === true) {
+    //     dispatch({type : 'REMOVE_FROM_WISHLIST' , payload : prodId})
+    // }
+    // else {
+    //     const userID = JSON.parse(localStorage?.getItem('userId'))
+    //     if(userID) {
+    //     try {
+    //         const {data : {product}} = axios.post(`https://intense-scrubland-09454.herokuapp.com/cart/${userID.userId}` , {productId : prodId})
+    //         dispatch({type : 'ADD_TO_WISHLIST' , payload : product})
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // } 
+    // }
 }
 
 export const PrivateRoute = ({path , ...rest}) => {

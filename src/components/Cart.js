@@ -1,21 +1,24 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {useData} from '../contexts/DataContext'
 import Navbar from '../components/Navbar'
 import {Link} from 'react-router-dom'
 import '../styles/cart.css'
+import axios from 'axios'
+import { useAuth } from '../contexts/AuthContext'
 const Cart = () => {
     const {state , dispatch} = useData()
+    const id = JSON.parse(localStorage?.getItem('userId')).id
     const getTotalPrice = (price , qty) => {
         return price*qty
     }
     const getTotalItemInCart = () => {
         return state.cart.reduce((acc , curr) => {
-                return acc+curr.qty
+                return acc+curr.quantity
         },0)
     }
     const getCartPrice = () => {
         return state.cart.reduce((acc,curr) => {
-            return acc+(curr.qty*curr.price)
+            return acc+(curr.quantity*curr.price)
         },0)
     }
     const isWishListed = (prodId) => {
@@ -26,10 +29,23 @@ const Cart = () => {
             return acc
         } , false)
     }
+    useEffect(() => {
+        if(id){
+        (async () => {
+            try {
+                const {data : {cart}} = await axios.get(`https://intense-scrubland-09454.herokuapp.com/cart/${id}`)
+                console.log(cart)
+                dispatch({type : 'LOAD_CART' , payload : cart})
+            } catch (error) {
+                console.log(error)
+            }          
+        })()
+    }
+    },[dispatch , id])
     return (
         <div>
             <Navbar />
-            {state.cart.length > 0 ? <div className = 'grid-row-6'> <div>{state.cart.map(each => (<div className = 'cart-card card__shadow' key = {each.id}>
+            {state.cart.length > 0 ? <div className = 'grid-row-6'> <div>{state.cart.map(each => (<div className = 'cart-card card__shadow' key = {each._id}>
                 <Link to = {`/productlist/${state.data.id}`}></Link>
                 <div className="product__img">
                     <img className='image__responsive' src={each.image} alt="img"/>
@@ -40,10 +56,10 @@ const Cart = () => {
                         <button className="btn btn-primary-danger" onClick = {() => dispatch({type : 'DECREMENT' , payload : each.id})} >
                             -
                         </button>
-                        <p>{each.qty}</p>
+                        <p>{each.quantity}</p>
                         <button className="btn btn-primary-success" onClick = {() => dispatch({type : 'INCREMENT' , payload : each.id})}>+</button>
                     </div>
-                    <h4>Rs. {getTotalPrice(each.price , each.qty)}.00</h4>
+                    <h4>Rs. {getTotalPrice(each.price , each.quantity)}.00</h4>
                     <div className="cart-buttons">
                         {isWishListed(each.id) ?<Link to = '/wishlist'><button className="btn btn-secondary-danger" >WISHLISTED</button></Link> : <button className="btn btn-secondary-danger" onClick = {() => dispatch({type : 'CART_TO_WISHLIST' , payload : each})}>MOVE TO WISHLIST</button>}
                         <button className="btn btn-primary-danger" onClick = {() => dispatch({type : 'REMOVE_FROM_CART' , payload : each.id})}>Remove From Cart</button>

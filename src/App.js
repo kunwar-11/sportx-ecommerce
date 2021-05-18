@@ -11,12 +11,11 @@ import Filter from './components/Filter'
 import Sort from './components/Sort'
 import SignUp from './components/SignUp'
 import {PrivateRoute} from './util'
-import { useAuth } from './contexts/AuthContext'
 import axios from 'axios'
 import { useData } from './contexts/DataContext'
+import { useAuth } from './contexts/AuthContext'
 function App() {
   const {login , setUsers} = useAuth()
-  const userID = JSON.parse(localStorage?.getItem('userId'))
   const {dispatch} = useData()
   useEffect(()=>{
     (async () => {
@@ -33,33 +32,15 @@ function App() {
     })(); 
 },[dispatch])
 useEffect (() => {
-        (async () => {
-                try {
-                    const {data : {user}} = await axios.get('https://intense-scrubland-09454.herokuapp.com/user')
-                    setUsers(user)
-                } catch (error) {
-                    
-                }
-            })()
+   (async () => {
+           try {
+               const {data : {user}} = await axios.get('https://intense-scrubland-09454.herokuapp.com/user')
+               setUsers(user)
+           } catch (error) {
+               
+           }
+       })()
 },[login , setUsers])
-useEffect(() => {
-  (async () => {
-    if(userID) {
-    try {
-      const {data : {cart}} = await axios.get(`https://intense-scrubland-09454.herokuapp.com/cart/${userID.userId}`)
-      dispatch({type : 'LOAD_CART' , payload : cart})
-  } catch (error) {
-      
-  }
-  try {
-      const {data : {wishlist}} = await axios.get(`https://intense-scrubland-09454.herokuapp.com/wishlist/${userID.userId}`)
-      dispatch({type : 'LOAD_WISHLIST' , payload : wishlist})
-  } catch (error) {
-      
-  }
-}
-  })()
-},[userID, dispatch , login])
   return (
     <div className="App">
         <Routes>

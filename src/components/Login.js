@@ -5,7 +5,7 @@ import '../styles/login.css'
 import Navbar from './Navbar'
 import axios from 'axios'
 const Login = () => {
-    const {setLogin , users , setUserName } = useAuth()
+    const {setLogin , users , setUserName , setUserId} = useAuth()
     const [name , setName] = useState('')
     const [password , setPassword] = useState('')
     const [error , setError] = useState({
@@ -26,11 +26,14 @@ const Login = () => {
                 if(name === element.email) {
                     setError(prev => ({...prev , userNameError : ''}))
                     if(password === element.password) {
+                        console.log('hello')
                         setLogin(true)
-                        setUserName(userName)
                         localStorage?.setItem('userLoggedIn', JSON.stringify({login : true}))
+                        setUserName(userName)
                         localStorage?.setItem('userName' , JSON.stringify({name : userName}))
-                        localStorage?.setItem('userId' , JSON.stringify({userId : userId}))
+                        console.log(userId)
+                        localStorage?.setItem('userId' , JSON.stringify({id : userId}))
+                        setUserId(userId)
                         navigate(state?.from ? state.from : '/')
                         setError(prev => ({...prev , passwordError : ''}))
                         return 

@@ -3,10 +3,11 @@ import { useData } from '../contexts/DataContext'
 import {addToCartHandler , getRatingType , addToWishListHandler} from '../util'
 import {Link} from 'react-router-dom'
 import '../styles/productCard.css'
+import { useAuth } from '../contexts/AuthContext'
 const ProductCard = ({product}) => {
     const {state : {cart , wishList} , dispatch} = useData()
     const {productName , image , price , ratings , _id} = product
-   
+    const {userId} = useAuth()
     const isWishListed = (prodId) => {
         return wishList.reduce((acc , curr) => {
             if(curr._id === prodId) {
@@ -44,7 +45,7 @@ const ProductCard = ({product}) => {
             </div>
             </Link>
             <i className={`heart fas fa-heart ${isWishListed(_id)}`} onClick = {() => addToWishListHandler(_id , wishList , product , dispatch)}></i>
-            {isInCart(_id) ? <button className="btn btn-secondary">Go To Cart</button> : <button className="btn btn-primary" onClick = {()=> addToCartHandler(product , dispatch)}>Add To Cart</button>}
+            {isInCart(_id) ?<Link to = '/cart'><button className="btn btn-secondary">Go To Cart</button></Link> : <button className="btn btn-primary" onClick = {()=> addToCartHandler(_id , dispatch , userId)}>Add To Cart</button>}
         </div>
     )
 }

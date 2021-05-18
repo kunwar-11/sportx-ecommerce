@@ -25,23 +25,28 @@ const Productpage = () => {
       }
     const [details , setDetails] = useState(null)
      useEffect(() => {
-         (async () => {
-            const {data : {product}} = await axios.get(`https://intense-scrubland-09454.herokuapp.com/products/${productId}`)
-            setDetails(product)
-         })()
-     },[productId])
+         try {
+            (async () => {
+                const {data : {product}} = await axios.get(`https://intense-scrubland-09454.herokuapp.com/products/${productId}`)
+                setDetails(product)
+             })()
+         } catch (error) {
+             
+         }
+     },[productId , dispatch])
     return (
         <div className = 'productdetails'>
             <Navbar />
-            {details &&  <> 
-            <div className="grid-row-6">
+                {!details && <h1>Loading....</h1>} 
+                {details &&  <>
+                <div className="grid-row-6">
                 <div className="product-img">
                     <img src={details.image} alt="product-img" className="image__responsive"/>
                     <div className="addbuttons desktop">
                       {isWishListed(details._id) ? <Link to="/wishlist"><div className = 'buttons wishlist'>WISHLISTED</div></Link> : <div className = 'buttons wishlist' onClick = {() => addToWishListHandler()}>WISHLIST</div>}
                       {isInCart(details._id)? <Link to = '/cart'><div className = 'buttons cart'>GO TO CART</div>
                       </Link>
-                       : <div className = 'buttons cart' onClick = {() => addToCartHandler(details , dispatch)}>ADD TO CART</div>}
+                       : <div className = 'buttons cart' onClick = {() => addToCartHandler(details._id , dispatch)}>ADD TO CART</div>}
             </div>
                 </div>
                 <div className="product-details">
@@ -64,15 +69,14 @@ const Productpage = () => {
                     {details.offers.map(each => <li key = {each} className = 'offers'>{each}</li>)}
                      </ul>
                 </div>
-            </div>
+                </div>                 
             <div  className="addbuttons mobile">
                       {isWishListed(details.id) ? <Link to="/wishlist"><div className = 'buttons wishlist'>WISHLISTED</div></Link> : <div className = 'buttons wishlist' onClick = {() => addToWishListHandler()}>WISHLIST</div>}
                       {isInCart(details.id)? <Link to = '/cart'><div className = 'buttons cart'>GO TO CART</div>
                       </Link>
                        : <div className = 'buttons cart' onClick = {() => addToCartHandler(details , dispatch)}>ADD TO CART</div>}
             </div>
-        </>    
-        }
+                </>}
         </div>
     )
 }
