@@ -4,7 +4,6 @@ import Navbar from '../components/Navbar'
 import {Link} from 'react-router-dom'
 import '../styles/cart.css'
 import axios from 'axios'
-import { useAuth } from '../contexts/AuthContext'
 const Cart = () => {
     const {state , dispatch} = useData()
     const id = JSON.parse(localStorage?.getItem('userId')).id
