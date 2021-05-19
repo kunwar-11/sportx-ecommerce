@@ -15,7 +15,6 @@ export  const getRatingType = (rating) => {
 export  const addToCartHandler = async (productId , dispatch , userId , setMessage) => {
     if(userId) {
     dispatch({type : 'STATUS' , payload : true})
-    setMessage('Adding To Cart...')
     try {
         const {data : {product , success}} = await axios.post(`https://intense-scrubland-09454.herokuapp.com/cart/${userId}` , {productId : productId})
         console.log(product)

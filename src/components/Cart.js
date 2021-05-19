@@ -1,11 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {useData} from '../contexts/DataContext'
 import Navbar from '../components/Navbar'
 import {Link} from 'react-router-dom'
 import '../styles/cart.css'
+import axios from 'axios'
+import { useAuth } from '../contexts/AuthContext'
+import SnackBar from './SnackBar'
 const Cart = () => {
     const {state , dispatch} = useData()
-   
+    const [message , setMessage] = useState("")
+    const {userId} = useAuth()
     const getTotalPrice = (price , qty) => {
         return price*qty
     }
@@ -27,28 +31,95 @@ const Cart = () => {
             return acc
         } , false)
     }
-    
+    const UpdateQuantity = async (prodId , type) => {
+        const product = state.cart.find(each => each._id === prodId)
+        switch(type) {
+            case "INC": 
+                const increment = await axios.post(`https://intense-scrubland-09454.herokuapp.com/cart/${userId}/${product._id}` , {quantity : product.quantity + 1})
+                console.log(increment)
+                if(increment.data.success)
+                dispatch({type : 'INCREMENT' , payload : prodId})
+                break
+            case "DEC" : 
+                const decrement = await axios.post(`https://intense-scrubland-09454.herokuapp.com/cart/${userId}/${product._id}` , {quantity : product.quantity - 1})
+                if(decrement.data.success)
+                dispatch({type : 'DECREMENT' , payload : prodId})
+                console.log(decrement)
+                if(decrement.data.product.quantity === 0) {
+                    console.log('i am here in If')
+                    const {data : {success}} =  await axios.delete(`https://intense-scrubland-09454.herokuapp.com/cart/${userId}/${product._id}`)
+                    if(success) {
+                        dispatch({type : 'REMOVE_FROM_CART' , payload : prodId})
+                    }
+                 }
+                 console.log(product)
+                break
+            default : console.log('Something went wrong')
+        }
+    }
+
+    const removeFromCart = async (prodId) => {
+        dispatch({type : 'STATUS' , payload : true})
+        try {
+            const {data : {success}} =  await axios.delete(`https://intense-scrubland-09454.herokuapp.com/cart/${userId}/${prodId}`)
+            if(success) {
+                dispatch({type : 'REMOVE_FROM_CART' , payload : prodId})
+            }
+        } catch (error) {
+            console.log(error)
+        }
+        finally{
+            dispatch({type : 'STATUS' , payload : false})
+            setMessage('Removed from Cart')
+        }
+    }
+
+    const fromCartToWishlist = async (prodId) => {
+        const prod = state.cart.find(each => each._id === prodId)
+        dispatch({type : 'STATUS' , payload : true})
+        try {
+            const {data} =  await axios.delete(`https://intense-scrubland-09454.herokuapp.com/cart/${userId}/${prodId}`)
+            console.log(data)
+        } catch (error) {
+            console.log(error)
+        }
+        finally{
+            dispatch({type : 'STATUS' , payload : false})
+            setMessage('Removed from Cart')
+        }
+        dispatch({type : 'STATUS' , payload : true})
+        try {
+            const {data : {product}} = await axios.post(`https://intense-scrubland-09454.herokuapp.com/wishlist/${userId}` , {productId : prodId})
+            console.log(product)
+        } catch (error) {
+            console.log(error)
+        }
+        finally {
+            dispatch({type : 'STATUS' , payload : false})
+            setMessage('Added To Wishlist')
+        }
+        dispatch({type : 'CART_TO_WISHLIST' , payload : prod})
+    }
     return (
         <div>
             <Navbar />
-            {state.cart.length > 0 ? <div className = 'grid-row-6'> <div>{state.cart.map(each => (<div className = 'cart-card card__shadow' key = {each._id}>
-                <Link to = {`/productlist/${state.data.id}`}></Link>
+            {state.loading ? <h1>Loading....</h1> : <>{state.cart.length > 0 ? <div className = 'grid-row-6'> <div>{state.cart.map(each => (<div className = 'cart-card card__shadow' key = {each._id}>
                 <div className="product__img">
                     <img className='image__responsive' src={each.image} alt="img"/>
                 </div>
                 <div className="product__details">
                     <h4>{each.productName}</h4>
                     <div className="product__quantity">
-                        <button className="btn btn-primary-danger" onClick = {() => dispatch({type : 'DECREMENT' , payload : each.id})} >
+                        <button className="btn btn-primary-danger" onClick = {() => UpdateQuantity(each._id , 'DEC')} >
                             -
                         </button>
                         <p>{each.quantity}</p>
-                        <button className="btn btn-primary-success" onClick = {() => dispatch({type : 'INCREMENT' , payload : each.id})}>+</button>
+                        <button className="btn btn-primary-success" onClick = {() => UpdateQuantity(each._id , 'INC')}>+</button>
                     </div>
                     <h4>Rs. {getTotalPrice(each.price , each.quantity)}.00</h4>
                     <div className="cart-buttons">
-                        {isWishListed(each.id) ?<Link to = '/wishlist'><button className="btn btn-secondary-danger" >WISHLISTED</button></Link> : <button className="btn btn-secondary-danger" onClick = {() => dispatch({type : 'CART_TO_WISHLIST' , payload : each})}>MOVE TO WISHLIST</button>}
-                        <button className="btn btn-primary-danger" onClick = {() => dispatch({type : 'REMOVE_FROM_CART' , payload : each.id})}>Remove From Cart</button>
+                        {isWishListed(each._id) ?<Link to = '/wishlist'><button className="btn btn-secondary-danger" >WISHLISTED</button></Link> : <button className="btn btn-secondary-danger" onClick = {() => fromCartToWishlist(each._id)}>MOVE TO WISHLIST</button>}
+                        <button className="btn btn-primary-danger" onClick = {() => removeFromCart(each._id)}>Remove From Cart</button>
                     </div>
                 </div>
             </div>))}</div>
@@ -66,7 +137,8 @@ const Cart = () => {
                     </div>
                 </div>
             </div> 
-        </div> : <h1>cart is emppty</h1>}
+        </div> : <h1>cart is emppty</h1>}</>}
+        {state.status === false && <SnackBar message = {message} type = {"snackbar__primary"}/>}
         </div>
     )
 }
