@@ -25,7 +25,6 @@ const ProductList = () => {
                       <Link to = '/sort'><div className = 'buttons cart'>SORT</div>
                       </Link>
         </div>
-        {status && <SnackBar message = {message} type = {"snackbar__secondary"}/> }
          {status === false && <SnackBar message = {message} type = {"snackbar__primary"}/>}
         </div>
     )
