@@ -2,6 +2,8 @@ export const dataReducer = (state , action) => {
     switch (action.type) {
         case 'LOADING_STATUS':
             return {...state , loading : action.payload}
+        case 'STATUS' : 
+            return {...state , status : action.payload}
         case 'DATA' :
             return {...state , data : action.payload}
         case "LOAD_CART" : 

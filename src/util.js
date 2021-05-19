@@ -12,8 +12,10 @@ export  const getRatingType = (rating) => {
         return 'rating-poor'
     }
 }
-export  const addToCartHandler = async (productId , dispatch , userId) => {
+export  const addToCartHandler = async (productId , dispatch , userId , setMessage) => {
     if(userId) {
+    dispatch({type : 'STATUS' , payload : true})
+    setMessage('Adding To Cart...')
     try {
         const {data : {product , success}} = await axios.post(`https://intense-scrubland-09454.herokuapp.com/cart/${userId}` , {productId : productId})
         console.log(product)
@@ -23,10 +25,16 @@ export  const addToCartHandler = async (productId , dispatch , userId) => {
     } catch (error) {
         console.log(error)
     }
+    finally {
+        dispatch({type : 'STATUS' , payload : false})
+        setMessage('Added To Cart')
+    }
  } 
 }
-export const addToWishListHandler = async (prodId , wishList , dispatch , userId) => {
+export const addToWishListHandler = async (prodId , wishList , dispatch , userId , setMessage) => {
     if(wishList.some(curr => curr._id === prodId) === true) {
+        dispatch({type : 'STATUS' , payload : true})
+        setMessage('Removing Please Wait...')
         try {
             const {data : {success , product}} = await axios.delete(`https://intense-scrubland-09454.herokuapp.com/wishlist/${userId}/${prodId}`)
             console.log(product._id)
@@ -36,14 +44,24 @@ export const addToWishListHandler = async (prodId , wishList , dispatch , userId
         } catch (error) {
             console.log(error)
         }
+        finally {
+            dispatch({type : 'STATUS' , payload : false})
+            setMessage('Removed From Wishlist')
+        }
     }
     else {
         if(userId) {
+        dispatch({type : 'STATUS' , payload : true})
+        setMessage('Adding To Wishlist...')
         try {
             const {data : {product}} = await axios.post(`https://intense-scrubland-09454.herokuapp.com/wishlist/${userId}` , {productId : prodId})
             dispatch({type : 'ADD_TO_WISHLIST' , payload : product})
         } catch (error) {
             console.log(error)
+        }
+        finally {
+            dispatch({type : 'STATUS' , payload : false})
+            setMessage('Added To Wishlist')
         }
     } 
     }

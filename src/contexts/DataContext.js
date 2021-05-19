@@ -12,7 +12,8 @@ const initialState = {
     isRated : null,
     rating : 0,
     isPriced : null,
-    price : 0
+    price : 0,
+    status : null
 }
 
 const sortData = (data , sortBy) => {

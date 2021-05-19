@@ -1,0 +1,25 @@
+.snackbar{
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+    align-items: center;
+    width: 100%;
+    max-width: 220px;
+    position: fixed;
+    right: 2%;
+    bottom: 3%;
+    font-weight: bold;
+    z-index: 999;
+    display: none;
+}
+.snackbar__primary{
+    background-color: var(--success);
+}
+.snackbar__secondary{
+    background-color: var(--background-gray);
+    color: var(--text);
+    color: var(--orange);
+}
+.close__snackbar{
+    cursor: pointer;
+}

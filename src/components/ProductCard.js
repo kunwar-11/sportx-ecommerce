@@ -4,10 +4,12 @@ import {addToCartHandler , getRatingType , addToWishListHandler} from '../util'
 import {Link} from 'react-router-dom'
 import '../styles/productCard.css'
 import { useAuth } from '../contexts/AuthContext'
-const ProductCard = ({product}) => {
+
+const ProductCard = ({product , setMessage}) => {
     const {state : {cart , wishList} , dispatch} = useData()
     const {productName , image , price , ratings , _id} = product
     const {userId} = useAuth()
+    
     const isWishListed = (prodId) => {
         if(wishList.some(curr => curr._id === prodId) === true) {
             return 'wishlisted'
@@ -42,8 +44,9 @@ const ProductCard = ({product}) => {
 		        </p>
             </div>
             </Link>
-            <i className={`heart fas fa-heart ${isWishListed(_id)}`} onClick = {() => addToWishListHandler(_id , wishList  , dispatch , userId)}></i>
-            {isInCart(_id) ?<Link to = '/cart'><button className="btn btn-secondary">Go To Cart</button></Link> : <button className="btn btn-primary" onClick = {()=> addToCartHandler(_id , dispatch , userId)}>Add To Cart</button>}
+            <i className={`heart fas fa-heart ${isWishListed(_id)}`} onClick = {() => addToWishListHandler(_id , wishList  , dispatch , userId , setMessage)}></i>
+            {isInCart(_id) ? <Link to = '/cart'><button className="btn btn-secondary">Go To Cart</button></Link> : <button className="btn btn-primary" onClick = {()=> addToCartHandler(_id , dispatch , userId , setMessage)}>ADD TO CART</button>}
+            
         </div>
     )
 }
