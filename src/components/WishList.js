@@ -1,30 +1,19 @@
 import React, { useState }  from 'react'
-import {useData} from '../contexts/DataContext'
-import {getRatingType} from '../util'
-import Navbar from '../components/Navbar'
+import {useData , useAuth} from '../contexts'
+import {getRatingType, isWishListed} from '../util'
+import {Navbar} from '../components/Navbar'
 import axios from 'axios'
 import '../styles/wishlist.css'
-import { useAuth } from '../contexts/AuthContext'
-import SnackBar from './SnackBar'
-const WishList = () => {
+import { Snackbar } from './SnackBar'
+export const WishList = () => {
     const {state : {wishList , loading , status , cart} , dispatch} = useData()
     const [message , setMessage] = useState('')
     const {userId} = useAuth()
-    const isWishListed = (prodId) => {
-        return wishList.reduce((acc , curr) => {
-            if(curr._id === prodId) {
-                return 'wishlisted'
-            }
-            return acc
-        } , '')
-    }
-    console.log(wishList)
     const removeFromWishlist = async (prodId) => {
         if(wishList.some(curr => curr._id === prodId) === true) {
             dispatch({type : 'STATUS' , payload : true})
             try {
                 const {data : {success , product}} = await axios.delete(`https://intense-scrubland-09454.herokuapp.com/wishlist/${userId}/${prodId}`)
-                console.log(product._id)
                 if(success){
                     dispatch({type : 'REMOVE_FROM_WISHLIST' , payload : product._id})
                 }
@@ -39,18 +28,14 @@ const WishList = () => {
     }
 
     const fromWishListToCart  = async (product) => {
-        //dispatch({type : 'WISHLIST_TO_CART', payload : product})
         try {
             if(cart.some(each => each._id === product._id) === true) {
                 const prod = cart.find(each => each._id === product._id)
-                console.log(prod)
-                const response = await axios.post(`https://intense-scrubland-09454.herokuapp.com/cart/${userId}/${product._id}` , {quantity : prod.quantity + 1})
-                console.log(response)
+                await axios.post(`https://intense-scrubland-09454.herokuapp.com/cart/${userId}/${product._id}` , {quantity : prod.quantity + 1})
             }
             else {
                 try {
-                    const {data} = await axios.post(`https://intense-scrubland-09454.herokuapp.com/cart/${userId}` , {productId : product._id})
-                    console.log(data)
+                    await axios.post(`https://intense-scrubland-09454.herokuapp.com/cart/${userId}` , {productId : product._id})
                 } catch (error) {
                     console.log(error)
                 }
@@ -89,13 +74,11 @@ const WishList = () => {
                         {product.price}
                     </p>
                 </div>
-                <i className={`heart fas fa-heart ${isWishListed(product._id)}`} onClick = {() => removeFromWishlist(product._id)}></i>
+                <i className={`heart fas fa-heart ${isWishListed(wishList, product._id)}`} onClick = {() => removeFromWishlist(product._id)}></i>
                <button className="btn btn-primary" onClick = {() => fromWishListToCart(product)}>Add To Cart</button>
             </div>)
             )}</div>: <h1>your WISHLIST is emppty</h1>}</>}
-            {status === false && <SnackBar message = {message} type = {"snackbar__primary"}/>}
+            {status === false && <Snackbar message = {message} type = {"snackbar__primary"}/>}
         </div>
     )
 }
-
-export default WishList

@@ -44,13 +44,14 @@ export const DataProvider = ({children}) => {
     
     const [state , dispatch] = useReducer(dataReducer , initialState)
     const [sideBar , setSideBar] = useState(false)
+    const [message , setMessage] = useState('')
     const sortedData = sortData(state.data , state.sortBy)
      const filteredData = filterData(sortedData , {includeOutOfStock : state.showInventory , fastDeliveryOnly : state.fastDelivery})
      const ratedData = ratingData(state.isRated ,filteredData , state.rating)
      const priceFilteredData = priceFilter(state.isPriced , ratedData , state.price)
     
     return (
-        <DataContext.Provider value = {{state , dispatch , sideBar , setSideBar , priceFilteredData}}>
+        <DataContext.Provider value = {{state , dispatch , sideBar , setSideBar , priceFilteredData , message  , setMessage}}>
             {children}
         </DataContext.Provider>
     )

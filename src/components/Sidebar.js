@@ -1,9 +1,8 @@
 import React , {useEffect} from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '../contexts/AuthContext'
-import {useData} from '../contexts/DataContext'
+import { useAuth , useData } from '../contexts'
 import '../styles/sidebar.css'
-const Sidebar = () => {
+export const Sidebar = () => {
     const {sideBar , setSideBar} = useData()
     const {login , name , setLogin , setUserName} = useAuth()
     const navigate = useNavigate()
@@ -47,5 +46,3 @@ const Sidebar = () => {
         </div>
     )
 }
-
-export default Sidebar

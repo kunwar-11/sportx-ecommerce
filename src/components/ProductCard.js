@@ -1,32 +1,13 @@
 import React from 'react'
-import { useData } from '../contexts/DataContext'
-import {addToCartHandler , getRatingType , addToWishListHandler} from '../util'
+import { useData , useAuth } from '../contexts'
+import {addToCartHandler , getRatingType , addToWishListHandler , isInCart , isWishListed} from '../util'
 import {Link} from 'react-router-dom'
 import '../styles/productCard.css'
-import { useAuth } from '../contexts/AuthContext'
 
-const ProductCard = ({product , setMessage}) => {
+export const ProductCard = ({product , setMessage}) => {
     const {state : {cart , wishList} , dispatch} = useData()
     const {productName , image , price , ratings , _id} = product
     const {userId} = useAuth()
-    
-    const isWishListed = (prodId) => {
-        if(wishList.some(curr => curr._id === prodId) === true) {
-            return 'wishlisted'
-        }
-        return ''
-    }
-    //  can be done using .some too => 
-    /*if(wishList.some(curr => curr.id === prodId) === true) {
-         return 'wishlisted'
-     }
-     return ''*/
-   
-    
-    const isInCart = (prodId) => {
-       return cart.some(each => each._id === prodId) ? true : false
-    }
-    //console.log(wishList)
     return (
         <div className="card card__with__overlayButton card__shadow">
             <Link to = {`/productlist/${_id}`}>
@@ -41,14 +22,12 @@ const ProductCard = ({product , setMessage}) => {
                 </div>
                 <p className="card__body">
                     {price}
-		        </p>
+		        </p> 
             </div>
             </Link>
-            <i className={`heart fas fa-heart ${isWishListed(_id)}`} onClick = {() => addToWishListHandler(_id , wishList  , dispatch , userId , setMessage)}></i>
-            {isInCart(_id) ? <Link to = '/cart'><button className="btn btn-secondary">Go To Cart</button></Link> : <button className="btn btn-primary" onClick = {()=> addToCartHandler(_id , dispatch , userId , setMessage)}>ADD TO CART</button>}
+            <i className={`heart fas fa-heart ${isWishListed(wishList , _id)}`} onClick = {() => addToWishListHandler(_id , wishList  , dispatch , userId , setMessage)}></i>
+            {isInCart(cart , _id) ? <Link to = '/cart'><button className="btn btn-secondary">Go To Cart</button></Link> : <button className="btn btn-primary" onClick = {()=> addToCartHandler(_id , dispatch , userId , setMessage)}>ADD TO CART</button>}
             
         </div>
     )
 }
-
-export default ProductCard

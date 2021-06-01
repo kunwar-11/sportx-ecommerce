@@ -1,9 +1,9 @@
 import React from 'react'
-import {useData} from '../contexts/DataContext'
+import {useData} from '../contexts'
 import {Link} from 'react-router-dom'
 import '../styles/navbar.css'
-import Sidebar from './Sidebar'
-const Navbar = () => {
+import {Sidebar} from './Sidebar'
+export const Navbar = () => {
     const {sideBar , setSideBar} = useData()
     return (
     <>
@@ -39,5 +39,3 @@ const Navbar = () => {
     </>
 )
 }
-
-export default Navbar

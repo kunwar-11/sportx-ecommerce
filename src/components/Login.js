@@ -1,32 +1,26 @@
 import React, { useState } from 'react'
-import {useAuth} from '../contexts/AuthContext'
+import {useAuth , useData} from '../contexts'
 import {Link, useLocation, useNavigate} from 'react-router-dom'
 import '../styles/login.css'
-import Navbar from './Navbar'
+import {Navbar} from './Navbar'
 import axios from 'axios'
-const Login = () => {
-    const {setLogin , users , setUserName , setUserId} = useAuth()
+import { Snackbar } from './SnackBar'
+export const Login = () => {
+    const {setLogin , setUserName , setUserId} = useAuth()
+    const {dispatch , setMessage , message , state : {status}} = useData()
     const [name , setName] = useState('')
     const [password , setPassword] = useState('')
-    const [error , setError] = useState({
-        userNameError : '',
-        passwordError : ''
-    })
     const navigate = useNavigate()
     const {state} = useLocation()
-    console.log(users)
     const loginHandler = async (e) => {
         e.preventDefault()
+        dispatch({type : 'STATUS' , payload : true})
         try {
-            const {data : {userName , userId}} = await axios.post('https://intense-scrubland-09454.herokuapp.com/user/login' , {
+            const {data : {userName , userId} , status} = await axios.post('https://intense-scrubland-09454.herokuapp.com/user/login' , {
                 userEmail : name,
                 password : password
             })
-            users.forEach(element => {
-                if(name === element.email) {
-                    setError(prev => ({...prev , userNameError : ''}))
-                    if(password === element.password) {
-                        console.log('hello')
+                if(status === 200) {
                         setLogin(true)
                         localStorage?.setItem('userLoggedIn', JSON.stringify({login : true}))
                         setUserName(userName)
@@ -35,21 +29,14 @@ const Login = () => {
                         localStorage?.setItem('userId' , userId)
                         setUserId(userId)
                         navigate(state?.from ? state.from : '/')
-                        setError(prev => ({...prev , passwordError : ''}))
-                        return 
-                    }
-                    setError(prev => ({...prev , passwordError : 'incorrect password'}))
+                        dispatch({type : 'STATUS' , payload : false})
+                        setMessage(`Welcome! ${userName}`)
                 }
-                else {
-                    setError(prev => ({...prev , userNameError : 'username not found'}))
-                }
-                console.log({error})
-            });
-        } catch (error) {
-            
+        } catch (err) {
+            console.log(err)
+            dispatch({type : 'STATUS' , payload : false})
+            setMessage("Invalid Credentials")
         }
-      
-       
     }
     return (
         <>
@@ -58,17 +45,14 @@ const Login = () => {
             <h3 style = {{textAlign : 'center'}}>Login</h3>
             <div className="input">
                 <input className = 'inputText' type="text" placeholder = 'enter Email' value = {name}  onChange = {(e) => setName(e.target.value)}/>
-                <small className={`error`}>{error.userNameError}</small>
             </div>
             <div className="input">  
                 <input className = 'inputText' type="password" placeholder = 'enter password' value = {password} onChange = {(e) => setPassword(e.target.value)}/>
-                <small className={`error`}>{error.passwordError}</small>
             </div>
             <button className="btn btn-primary" onClick = {(e)=> loginHandler(e)}>Login</button>
             <small style = {{textAlign : 'center' , marginTop : '1rem'}}>not yet signed up , <Link to = '/signup'><span style = {{textDecoration : 'underline' , cursor : 'pointer'}}>Sign Up Here</span> </Link></small>
         </form>
+        {status === false && <Snackbar message = {message} type = {`${message === "Invalid Credentials" ? "snackbar__secondary" : "snackbar__Success"}`}/>}
         </>
     )
 }
-
-export default Login

@@ -1,15 +1,7 @@
 import React , {useEffect} from 'react'
-import ProductList from './components/ProductList'
-import WishList from './components/WishList'
-import Home from './components/Home'
-import Cart from './components/Cart'
-import Productpage from './components/Productpage'
-import Login from './components/Login'
+import { Cart, Filter, Home, Login, ProductList, Productpage, SignUp, Sort, WishList } from './components'
 import {Routes , Route}from 'react-router-dom'
 import './styles/App.css'
-import Filter from './components/Filter'
-import Sort from './components/Sort'
-import SignUp from './components/SignUp'
 import {PrivateRoute} from './util'
 import axios from 'axios'
 import { useData } from './contexts/DataContext'
@@ -17,7 +9,6 @@ import { useAuth } from './contexts/AuthContext'
 function App() {
   const {login , setUsers , userId} = useAuth()
   const {dispatch} = useData()
-  //const id = JSON.parse(localStorage?.getItem('userId'))?.id
   useEffect(()=>{
     (async () => {
         try {
@@ -47,7 +38,6 @@ useEffect(() => {
   (async () => {
       try {
           const {data : {cart}} = await axios.get(`https://intense-scrubland-09454.herokuapp.com/cart/${userId}`)
-          console.log(cart)
           dispatch({type : 'LOAD_CART' , payload : cart})
       } catch (error) {
           console.log(error)
@@ -60,7 +50,6 @@ useEffect(() =>{
       (async () => {
           try {
               const {data : {wishlist}} = await axios.get(`https://intense-scrubland-09454.herokuapp.com/wishlist/${userId}`)
-              console.log(wishlist)
               dispatch({type : 'LOAD_WISHLIST' , payload : wishlist})
           } catch (error) {
               console.log(error)
@@ -80,11 +69,6 @@ useEffect(() =>{
           <Route path = '/sort' element = {<Sort />} />
           <Route path = '/signup' element = {<SignUp />} />
         </Routes>
-        {/* <Navbar />
-        <div className = 'App__Layout'>
-          <div></div>
-        <ProductList />
-        </div> */}
     </div>
   );
 }

@@ -1,9 +1,9 @@
 import React from 'react'
-import {useData} from '../contexts/DataContext'
+import {useData} from '../contexts'
 import {Link} from 'react-router-dom'
 import '../styles/filter.css'
-import Navbar from './Navbar'
-const Sort = () => {
+import {Navbar} from './Navbar'
+export const Sort = () => {
     const {state : {sortBy , showInventory , fastDelivery}, dispatch} = useData()
     return (
         <div>
@@ -49,5 +49,3 @@ const Sort = () => {
         </div>
     )
 }
-
-export default Sort

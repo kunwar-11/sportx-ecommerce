@@ -15,7 +15,6 @@ export const AuthProvider = ({children}) => {
         userName?.name && setUserName(userName.name)
         const userID = localStorage?.getItem('userId')
         userID && setUserId(userID)
-        console.log(userId)
         },[userId])
     return (
         <AuthContext.Provider value = {{login , users , name , setUsers , setLogin , setUserName , userId , setUserId}}>

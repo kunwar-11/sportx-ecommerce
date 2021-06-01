@@ -1,9 +1,9 @@
 import React , {useState} from 'react'
 import { Link } from 'react-router-dom'
-import { useAuth } from '../contexts/AuthContext'
+import { useAuth } from '../contexts'
 import {useNavigate} from 'react-router-dom'
 import axios from 'axios'
-const SignUp = () => {
+export const SignUp = () => {
     const [newUser , setNewUser] = useState({
         FirstName : '',
         LastName : '',
@@ -104,5 +104,3 @@ const SignUp = () => {
         </form>
     )
 }
-
-export default SignUp

@@ -1,14 +1,14 @@
-import React , {useState}  from 'react'
-import {useData} from '../contexts/DataContext'
-import Navbar from './Navbar'
-import ProductCard from './ProductCard'
+import React from 'react'
+import {useData} from '../contexts'
 import '../styles/productList.css'
-import FilterAndSort from './FilterAndSort'
 import {Link} from 'react-router-dom'
-import SnackBar from './SnackBar'
-const ProductList = () => {
-    const {state : {loading , status} , priceFilteredData} = useData()
-    const [message , setMessage] = useState('')
+import { Snackbar } from './SnackBar'
+import { Navbar } from './Navbar'
+import { FilterAndSort } from './FilterAndSort'
+import { ProductCard } from './ProductCard'
+export const ProductList = () => {
+    const {state : {loading , status} , priceFilteredData , message , setMessage} = useData()
+    
     return (
         <div>
         <Navbar />
@@ -25,9 +25,7 @@ const ProductList = () => {
                       <Link to = '/sort'><div className = 'buttons cart'>SORT</div>
                       </Link>
         </div>
-         {status === false && <SnackBar message = {message} type = {"snackbar__primary"}/>}
+         {status === false && <Snackbar message = {message} type = {"snackbar__primary"}/>}
         </div>
     )
 }
-
-export default ProductList

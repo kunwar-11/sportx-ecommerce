@@ -1,9 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import {useData} from '../contexts/DataContext'
+import {useData} from '../contexts'
 import '../styles/filter.css'
-import Navbar from './Navbar'
-const Filter = () => {
+import {Navbar} from './Navbar'
+export const Filter = () => {
     const {state : {isRated , isPriced}, dispatch} = useData()
     return (
         <div>
@@ -84,5 +84,3 @@ const Filter = () => {
         </div>
     )
 }
-
-export default Filter

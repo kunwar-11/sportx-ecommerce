@@ -1,12 +1,12 @@
 import React from 'react'
-import {useData} from '../contexts/DataContext'
+import {useData} from '../contexts'
 import '../styles/filterandsort.css'
-const FilterAndSort = () => {
+export const FilterAndSort = () => {
     const {state : {sortBy , showInventory , fastDelivery , isRated , isPriced}, dispatch} = useData()
     return (
         <div className = 'filter__and__sort'>
             <div className = 'clear-filters' onClick = {() => dispatch({type : 'CLEAR_FILTER'})}>
-                CLEAR FILTERS
+                <p style = {{fontWeight : "bold" , padding : "1rem 0rem"}}> CLEAR FILTERS</p>
             </div>
             <div className="divider"></div>
             <label className = 'labels'>
@@ -96,5 +96,3 @@ const FilterAndSort = () => {
         </div>
     )
 }
-
-export default FilterAndSort

@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
-import {useData} from '../contexts/DataContext'
-import Navbar from '../components/Navbar'
+import {Navbar} from '../components/Navbar'
 import {Link} from 'react-router-dom'
 import '../styles/cart.css'
 import axios from 'axios'
-import { useAuth } from '../contexts/AuthContext'
-import SnackBar from './SnackBar'
-const Cart = () => {
+import { useAuth , useData} from '../contexts'
+import { Snackbar } from './SnackBar'
+export const Cart = () => {
     const {state , dispatch} = useData()
     const [message , setMessage] = useState("")
     const {userId} = useAuth()
@@ -78,8 +77,7 @@ const Cart = () => {
         const prod = state.cart.find(each => each._id === prodId)
         dispatch({type : 'STATUS' , payload : true})
         try {
-            const {data} =  await axios.delete(`https://intense-scrubland-09454.herokuapp.com/cart/${userId}/${prodId}`)
-            console.log(data)
+            await axios.delete(`https://intense-scrubland-09454.herokuapp.com/cart/${userId}/${prodId}`)
         } catch (error) {
             console.log(error)
         }
@@ -89,8 +87,7 @@ const Cart = () => {
         }
         dispatch({type : 'STATUS' , payload : true})
         try {
-            const {data : {product}} = await axios.post(`https://intense-scrubland-09454.herokuapp.com/wishlist/${userId}` , {productId : prodId})
-            console.log(product)
+            await axios.post(`https://intense-scrubland-09454.herokuapp.com/wishlist/${userId}` , {productId : prodId})
         } catch (error) {
             console.log(error)
         }
@@ -138,7 +135,7 @@ const Cart = () => {
                 </div>
             </div> 
         </div> : <h1>cart is emppty</h1>}</>}
-        {state.status === false && <SnackBar message = {message} type = {"snackbar__primary"}/>}
+        {state.status === false && <Snackbar message = {message} type = {"snackbar__primary"}/>}
         </div>
     )
 }

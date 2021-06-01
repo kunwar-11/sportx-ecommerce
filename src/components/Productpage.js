@@ -1,29 +1,16 @@
 import React , {useEffect, useState} from 'react'
 import {useParams} from 'react-router-dom'
-import {useData} from '../contexts/DataContext'
-import {getRatingType , addToCartHandler} from '../util'
-import Navbar from './Navbar'
+import {useData , useAuth} from '../contexts'
+import {getRatingType , addToCartHandler , isWishListed , isInCart , addToWishList} from '../util'
+import {Navbar} from './Navbar'
 import '../styles/productpage.css'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
-const Productpage = () => {
+import {Snackbar} from './SnackBar'
+export const Productpage = () => {
     const {productId} = useParams()
-    const {state : {cart , wishList} , dispatch} = useData() 
-    const addToWishListHandler = async () => {
-            
-            dispatch({type : 'ADD_TO_WISHLIST' , payload : details})
-    }
-    const isWishListed = (prodId) => {
-        return wishList.reduce((acc , curr) => {
-            if(curr._id === prodId) {
-                return true
-            }
-            return acc
-        } , false)
-    }
-    const isInCart = (prodId) => {
-        return cart.some(each => each._id === prodId) ? true : false
-      }
+    const {state : {status , cart , wishList} , dispatch , setMessage , message} = useData()
+    const {userId} = useAuth() 
     const [details , setDetails] = useState(null)
      useEffect(() => {
          try {
@@ -44,10 +31,10 @@ const Productpage = () => {
                 <div className="product-img">
                     <img src={details.image} alt="product-img" className="image__responsive"/>
                     <div className="addbuttons desktop">
-                      {isWishListed(details._id) ? <Link to="/wishlist"><div className = 'buttons wishlist'>WISHLISTED</div></Link> : <div className = 'buttons wishlist' onClick = {() => addToWishListHandler()}>WISHLIST</div>}
-                      {isInCart(details._id)? <Link to = '/cart'><div className = 'buttons cart'>GO TO CART</div>
+                      {isWishListed(wishList,details._id) ? <Link to="/wishlist"><div className = 'buttons wishlist'>WISHLISTED</div></Link> : <div className = 'buttons wishlist' onClick = {() => addToWishList(details._id  , dispatch , userId ,setMessage)}>WISHLIST</div>}
+                      {isInCart(cart , details._id)? <Link to = '/cart'><div className = 'buttons cart'>GO TO CART</div>
                       </Link>
-                       : <div className = 'buttons cart' onClick = {() => addToCartHandler(details._id , dispatch)}>ADD TO CART</div>}
+                       : <div className = 'buttons cart' onClick = {() => addToCartHandler(details._id , dispatch , userId , setMessage)}>ADD TO CART</div>}
             </div>
                 </div>
                 <div className="product-details">
@@ -72,14 +59,13 @@ const Productpage = () => {
                 </div>
                 </div>                 
             <div  className="addbuttons mobile">
-                      {isWishListed(details._id) ? <Link to="/wishlist"><div className = 'buttons wishlist'>WISHLISTED</div></Link> : <div className = 'buttons wishlist' onClick = {() => addToWishListHandler()}>WISHLIST</div>}
-                      {isInCart(details._id)? <Link to = '/cart'><div className = 'buttons cart'>GO TO CART</div>
+                      {isWishListed(wishList,details._id) ? <Link to="/wishlist"><div className = 'buttons wishlist'>WISHLISTED</div></Link> : <div className = 'buttons wishlist' onClick = {() => addToWishList(details._id  , dispatch , userId , setMessage)}>WISHLIST</div>}
+                      {isInCart(cart,details._id)? <Link to = '/cart'><div className = 'buttons cart'>GO TO CART</div>
                       </Link>
-                       : <div className = 'buttons cart' onClick = {() => addToCartHandler(details , dispatch)}>ADD TO CART</div>}
+                       : <div className = 'buttons cart' onClick = {() => addToCartHandler(details._id , dispatch , userId , setMessage)}>ADD TO CART</div>}
             </div>
                 </>}
+                {status === false && <Snackbar message = {message} type = {"snackbar__primary"}/>}
         </div>
     )
 }
-
-export default Productpage

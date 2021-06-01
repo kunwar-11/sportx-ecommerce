@@ -17,7 +17,6 @@ export  const addToCartHandler = async (productId , dispatch , userId , setMessa
     dispatch({type : 'STATUS' , payload : true})
     try {
         const {data : {product , success}} = await axios.post(`https://intense-scrubland-09454.herokuapp.com/cart/${userId}` , {productId : productId})
-        console.log(product)
         if(success) {
             dispatch({type : 'ADD_TO_CART' , payload : product})
         }
@@ -36,7 +35,6 @@ export const addToWishListHandler = async (prodId , wishList , dispatch , userId
         setMessage('Removing Please Wait...')
         try {
             const {data : {success , product}} = await axios.delete(`https://intense-scrubland-09454.herokuapp.com/wishlist/${userId}/${prodId}`)
-            console.log(product._id)
             if(success){
                 dispatch({type : 'REMOVE_FROM_WISHLIST' , payload : product._id})
             }
@@ -50,22 +48,35 @@ export const addToWishListHandler = async (prodId , wishList , dispatch , userId
     }
     else {
         if(userId) {
-        dispatch({type : 'STATUS' , payload : true})
-        setMessage('Adding To Wishlist...')
-        try {
-            const {data : {product}} = await axios.post(`https://intense-scrubland-09454.herokuapp.com/wishlist/${userId}` , {productId : prodId})
-            dispatch({type : 'ADD_TO_WISHLIST' , payload : product})
-        } catch (error) {
-            console.log(error)
-        }
-        finally {
-            dispatch({type : 'STATUS' , payload : false})
-            setMessage('Added To Wishlist')
-        }
+       addToWishList(prodId , dispatch , userId , setMessage)
     } 
     }
 }
-
+export const addToWishList = async (prodId , dispatch , userId , setMessage) => {
+    dispatch({type : 'STATUS' , payload : true})
+    setMessage('Adding To Wishlist...')
+    try {
+        const {data : {product}} = await axios.post(`https://intense-scrubland-09454.herokuapp.com/wishlist/${userId}` , {productId : prodId})
+        dispatch({type : 'ADD_TO_WISHLIST' , payload : product})
+    } catch (error) {
+        console.log(error)
+    }
+    finally {
+        dispatch({type : 'STATUS' , payload : false})
+        setMessage('Added To Wishlist')
+    }
+}
+export const isWishListed = (wishList , prodId) => {
+    return wishList.reduce((acc , curr) => {
+        if(curr._id === prodId) {
+            return 'wishlisted'
+        }
+        return acc
+    } , '')
+}
+export const isInCart = (cart , prodId) => {
+    return cart.some(each => each._id === prodId) ? true : false
+  }
 export const PrivateRoute = ({path , ...rest}) => {
     const {login} = useAuth()
     if(login) {
