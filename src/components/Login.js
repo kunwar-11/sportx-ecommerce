@@ -52,7 +52,7 @@ export const Login = () => {
             <button className="btn btn-primary" onClick = {(e)=> loginHandler(e)}>Login</button>
             <small style = {{textAlign : 'center' , marginTop : '1rem'}}>not yet signed up , <Link to = '/signup'><span style = {{textDecoration : 'underline' , cursor : 'pointer'}}>Sign Up Here</span> </Link></small>
         </form>
-        {status === false && <Snackbar message = {message} type = {`${message === "Invalid Credentials" ? "snackbar__secondary" : "snackbar__Success"}`}/>}
+        {status === false && <Snackbar message = {message} type = {`${message === "Invalid Credentials" ? "snackbar__secondary" : "snackbar__success"}`}/>}
         </>
     )
 }

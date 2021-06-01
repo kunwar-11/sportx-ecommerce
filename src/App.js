@@ -4,10 +4,10 @@ import {Routes , Route}from 'react-router-dom'
 import './styles/App.css'
 import {PrivateRoute} from './util'
 import axios from 'axios'
-import { useData } from './contexts/DataContext'
-import { useAuth } from './contexts/AuthContext'
+import { useData , useAuth } from './contexts'
 function App() {
   const {login , setUsers , userId} = useAuth()
+  console.log(userId)
   const {dispatch} = useData()
   useEffect(()=>{
     (async () => {
