@@ -28,6 +28,10 @@ export  const addToCartHandler = async (productId , dispatch , userId , setMessa
         setMessage('Added To Cart')
     }
  } 
+ else {
+     dispatch({type : 'STATUS' , playload : false})
+     setMessage('Please Login To Continue')
+ }
 }
 export const addToWishListHandler = async (prodId , wishList , dispatch , userId , setMessage) => {
     if(wishList.some(curr => curr._id === prodId) === true) {
@@ -50,6 +54,10 @@ export const addToWishListHandler = async (prodId , wishList , dispatch , userId
         if(userId) {
        addToWishList(prodId , dispatch , userId , setMessage)
     } 
+    else {
+        dispatch({type : 'STATUS' , playload : false})
+        setMessage('Please Login To Continue')
+    }
     }
 }
 export const addToWishList = async (prodId , dispatch , userId , setMessage) => {
@@ -66,7 +74,8 @@ export const addToWishList = async (prodId , dispatch , userId , setMessage) => 
         setMessage('Added To Wishlist')
     }
 }
-export const isWishListed = (wishList , prodId) => {
+export const isWishListed = (userId ,wishList , prodId) => {
+    if(userId){
     return wishList.reduce((acc , curr) => {
         if(curr._id === prodId) {
             return 'wishlisted'
@@ -74,8 +83,17 @@ export const isWishListed = (wishList , prodId) => {
         return acc
     } , '')
 }
-export const isInCart = (cart , prodId) => {
+else {
+    return false
+}
+}
+export const isInCart = (userId ,cart , prodId) => {
+    if(userId){
     return cart.some(each => each._id === prodId) ? true : false
+    }
+    else {
+        return false
+    }
   }
 export const PrivateRoute = ({path , ...rest}) => {
     const {login} = useAuth()

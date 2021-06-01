@@ -6,7 +6,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({children}) => {
     const [users , setUsers] = useState(null)
     const [login , setLogin] = useState(JSON.parse(localStorage?.getItem('userLoggedIn'))|| false)
-    const [name , setUserName]  = useState(JSON.parse(localStorage?.getItem('userName'))|| '')
+    const [name , setUserName]  = useState(JSON.parse(localStorage?.getItem('userName'))|| null)
     const [userId , setUserId] = useState(localStorage?.getItem('userId')|| '')
     useEffect(() => {
         const userLoggendIn = JSON.parse(localStorage?.getItem('userLoggedIn'))
@@ -15,6 +15,7 @@ export const AuthProvider = ({children}) => {
         userName?.name && setUserName(userName.name)
         const userID = localStorage?.getItem('userId')
         userID && setUserId(userID)
+        console.log(userId)
         },[userId])
     return (
         <AuthContext.Provider value = {{login , users , name , setUsers , setLogin , setUserName , userId , setUserId}}>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {Navbar} from '../components/Navbar'
 import {Link} from 'react-router-dom'
 import '../styles/cart.css'
@@ -6,8 +6,7 @@ import axios from 'axios'
 import { useAuth , useData} from '../contexts'
 import { Snackbar } from './SnackBar'
 export const Cart = () => {
-    const {state , dispatch} = useData()
-    const [message , setMessage] = useState("")
+    const {state , dispatch , message , setMessage} = useData()
     const {userId} = useAuth()
     const getTotalPrice = (price , qty) => {
         return price*qty

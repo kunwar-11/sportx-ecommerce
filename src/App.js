@@ -7,8 +7,8 @@ import axios from 'axios'
 import { useData , useAuth } from './contexts'
 function App() {
   const {login , setUsers , userId} = useAuth()
-  console.log(userId)
   const {dispatch} = useData()
+  console.log(userId)
   useEffect(()=>{
     (async () => {
         try {

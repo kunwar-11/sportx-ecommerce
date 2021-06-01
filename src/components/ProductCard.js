@@ -25,8 +25,8 @@ export const ProductCard = ({product , setMessage}) => {
 		        </p> 
             </div>
             </Link>
-            <i className={`heart fas fa-heart ${isWishListed(wishList , _id)}`} onClick = {() => addToWishListHandler(_id , wishList  , dispatch , userId , setMessage)}></i>
-            {isInCart(cart , _id) ? <Link to = '/cart'><button className="btn btn-secondary">Go To Cart</button></Link> : <button className="btn btn-primary" onClick = {()=> addToCartHandler(_id , dispatch , userId , setMessage)}>ADD TO CART</button>}
+            <i className={`heart fas fa-heart ${isWishListed(userId  ,wishList , _id)}`} onClick = {() => addToWishListHandler(_id , wishList  , dispatch , userId , setMessage)}></i>
+            {isInCart(userId , cart , _id) ? <Link to = '/cart'><button className="btn btn-secondary">Go To Cart</button></Link> : <button className="btn btn-primary" onClick = {()=> addToCartHandler(_id , dispatch , userId , setMessage)}>ADD TO CART</button>}
             
         </div>
     )

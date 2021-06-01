@@ -1,4 +1,4 @@
-import React, { useState }  from 'react'
+import React  from 'react'
 import {useData , useAuth} from '../contexts'
 import {getRatingType, isWishListed} from '../util'
 import {Navbar} from '../components/Navbar'
@@ -6,8 +6,7 @@ import axios from 'axios'
 import '../styles/wishlist.css'
 import { Snackbar } from './SnackBar'
 export const WishList = () => {
-    const {state : {wishList , loading , status , cart} , dispatch} = useData()
-    const [message , setMessage] = useState('')
+    const {state : {wishList , loading , status , cart} , dispatch , message , setMessage} = useData()
     const {userId} = useAuth()
     const removeFromWishlist = async (prodId) => {
         if(wishList.some(curr => curr._id === prodId) === true) {
@@ -74,7 +73,7 @@ export const WishList = () => {
                         {product.price}
                     </p>
                 </div>
-                <i className={`heart fas fa-heart ${isWishListed(wishList, product._id)}`} onClick = {() => removeFromWishlist(product._id)}></i>
+                <i className={`heart fas fa-heart ${isWishListed(userId , wishList, product._id)}`} onClick = {() => removeFromWishlist(product._id)}></i>
                <button className="btn btn-primary" onClick = {() => fromWishListToCart(product)}>Add To Cart</button>
             </div>)
             )}</div>: <h1>your WISHLIST is emppty</h1>}</>}

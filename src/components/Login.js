@@ -37,6 +37,9 @@ export const Login = () => {
             dispatch({type : 'STATUS' , payload : false})
             setMessage("Invalid Credentials")
         }
+        finally{
+            dispatch({type : "STATUS" , payload : false})
+        }
     }
     return (
         <>
