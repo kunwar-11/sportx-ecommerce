@@ -33,9 +33,9 @@ export const Login = () => {
                         setMessage(`Welcome! ${userName}`)
                 }
         } catch (err) {
-            console.log(err)
+            console.log(err.response)
             dispatch({type : 'STATUS' , payload : false})
-            setMessage("Invalid Credentials")
+            setMessage(err.response.data.message)
         }
         finally{
             dispatch({type : "STATUS" , payload : false})
@@ -55,7 +55,7 @@ export const Login = () => {
             <button className="btn btn-primary" onClick = {(e)=> loginHandler(e)}>Login</button>
             <small style = {{textAlign : 'center' , marginTop : '1rem'}}>not yet signed up , <Link to = '/signup'><span style = {{textDecoration : 'underline' , cursor : 'pointer'}}>Sign Up Here</span> </Link></small>
         </form>
-        {status === false && <Snackbar message = {message} type = {`${message === "Invalid Credentials" ? "snackbar__secondary" : "snackbar__success"}`}/>}
+        {(status === false && message.length > 0) && <Snackbar message = {message} type = {"snackbar__secondary"}/>}
         </>
     )
 }
