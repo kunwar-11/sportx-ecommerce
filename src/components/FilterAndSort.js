@@ -10,11 +10,11 @@ export const FilterAndSort = () => {
             </div>
             <div className="divider"></div>
             <label className = 'labels'>
-                <input type="radio" name = 'sort' checked = {sortBy && sortBy === 'HIGH_TO_LOW'} onChange = {()=> dispatch({type : 'SORT' , payload : 'HIGH_TO_LOW'})}/>
+                <input type="radio" name = 'sort' checked = {(sortBy && sortBy === 'HIGH_TO_LOW') || false} onChange = {()=> dispatch({type : 'SORT' , payload : 'HIGH_TO_LOW'})}/>
                 Price :- HIGH to LOW
             </label>
             <label className = 'labels'>
-                <input type="radio" name = 'sort' checked = {sortBy && sortBy === 'LOW_TO_HIGH'} onChange = {()=> dispatch({type : 'SORT' , payload : 'LOW_TO_HIGH'})}/>
+                <input type="radio" name = 'sort' checked = {(sortBy && sortBy === 'LOW_TO_HIGH') || false} onChange = {()=> dispatch({type : 'SORT' , payload : 'LOW_TO_HIGH'})}/>
                 Price :- LOW TO HIGH
             </label>
             <label className = 'labels'>
@@ -38,7 +38,7 @@ export const FilterAndSort = () => {
         <label className = 'labels'>
           <input
             type="checkbox"
-            checked={isRated && isRated === 4}
+            checked={(isRated && isRated === 4) || false}
             onChange={() => dispatch({ type: "RATED_DATA" , payload : 4})}
           />
             4 and ABOVE
@@ -46,7 +46,7 @@ export const FilterAndSort = () => {
         <label className = 'labels'>
           <input
             type="checkbox"
-            checked={isRated && isRated === 3}
+            checked={(isRated && isRated === 3) || false}
             onChange={() => dispatch({ type: "RATED_DATA" , payload : 3})}
           />
             3 and ABOVE
@@ -54,7 +54,7 @@ export const FilterAndSort = () => {
         <label className = 'labels'>
           <input
             type="checkbox"
-            checked={isRated && isRated === 2}
+            checked={(isRated && isRated === 2) || false}
             onChange={() => dispatch({ type: "RATED_DATA" , payload : 2})}
           />
             2 and ABOVE
@@ -64,7 +64,7 @@ export const FilterAndSort = () => {
         <label className = 'labels'>
           <input
             type="checkbox"
-            checked={isPriced && isPriced === 700}
+            checked={(isPriced && isPriced === 700) || false}
             onChange={() => dispatch({ type: "PRICE_FILTER" , payload : 700})}
           />
             Rs 700 and ABOVE
@@ -72,7 +72,7 @@ export const FilterAndSort = () => {
         <label className = 'labels'>
           <input
             type="checkbox"
-            checked={isPriced && isPriced === 600}
+            checked={(isPriced && isPriced === 600) || false}
             onChange={() => dispatch({ type: "PRICE_FILTER" , payload : 600})}
           />
             Rs 600 and ABOVE
@@ -80,7 +80,7 @@ export const FilterAndSort = () => {
         <label className = 'labels'>
           <input
             type="checkbox"
-            checked={isPriced && isPriced === 500}
+            checked={(isPriced && isPriced === 500) || false}
             onChange={() => dispatch({ type: "PRICE_FILTER" , payload : 500})}
           />
             Rs 500 and ABOVE
@@ -88,7 +88,7 @@ export const FilterAndSort = () => {
         <label className = 'labels'>
           <input
             type="checkbox"
-            checked={isPriced && isPriced === 400}
+            checked={(isPriced && isPriced === 400) || false}
             onChange={() => dispatch({ type: "PRICE_FILTER" , payload : 400})}
           />
             Rs 400 and ABOVE
