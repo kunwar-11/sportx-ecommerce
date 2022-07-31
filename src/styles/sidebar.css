@@ -1,19 +1,22 @@
 .sidebar{
     background-color: var(--white);
     position: fixed;
-    width: 300px;
+    width: 275px;
     height: 100%;
     top: 0;
     z-index: 500;
+    -moz-box-shadow:    -3px 0 200px 100px rgba(0,0,0,0.5);
+  -webkit-box-shadow: -3px 0 200px 100px rgba(0,0,0,0.5);
+  box-shadow:         -3px 0 200px 100px rgba(0,0,0,0.5);
 }
 .sidebar__brand__name{
     padding: 0.5rem 1.2rem;
 }
 .show {
-    left: 0;
+    display: block;
 }
 .hide {
-    left: -300px;
+    display: none;
 }
 .sidebar__list{
     padding-inline-start: 0px;

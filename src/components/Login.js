@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import {useAuth , useData} from '../contexts'
 import {Link, useLocation, useNavigate} from 'react-router-dom'
 import '../styles/login.css'
-import {Navbar} from './Navbar'
 import axios from 'axios'
 import { Snackbar } from './SnackBar'
 export const Login = () => {
@@ -43,7 +42,6 @@ export const Login = () => {
     }
     return (
         <>
-        <Navbar />
         <form className = 'login-form card__shadow'>
             <h3 style = {{textAlign : 'center'}}>Login</h3>
             <div className="input">

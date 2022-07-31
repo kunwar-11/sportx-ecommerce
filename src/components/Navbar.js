@@ -1,10 +1,22 @@
 import React from 'react'
-import {useData} from '../contexts'
-import {Link} from 'react-router-dom'
+import {useAuth, useData} from '../contexts'
+import {Link, useNavigate} from 'react-router-dom'
 import '../styles/navbar.css'
 import {Sidebar} from './Sidebar'
 export const Navbar = () => {
     const {sideBar , setSideBar} = useData()
+    const {userId , setLogin , setUserName , setUserId } = useAuth()
+    const navigate = useNavigate()
+    const logout = () => {
+        setSideBar(false)
+        localStorage?.removeItem('userLoggedIn')
+        localStorage?.removeItem('userName')
+        localStorage?.removeItem('userId')
+        setLogin(false)
+        setUserName('')
+        setUserId(null)
+        navigate('/')
+    }
     return (
     <>
     <Sidebar />
@@ -29,9 +41,14 @@ export const Navbar = () => {
                 <i className="fas fa-shopping-cart  icon-only cart"></i>
             </div>
             </Link>
-            <div className="badge-on-icon nav__pills mob">
-                <i className={`fas ${sideBar ? "fa-times" : "fa-bars"}`} onClick = {() => setSideBar(prev => !prev)}></i>
-        </div>
+            <div className='badge-on-icon nav__pills'>
+                {userId ?
+                    <i className="fas fa-sign-out-alt icon-only" onClick={logout}></i>
+                : <Link to = "/login"><button className='button2'>Login</button></Link>}
+            </div>
+            {!sideBar && <div className="badge-on-icon nav__pills mob">
+                <i className={`fas ${"fa-bars"}`} onClick = {() => setSideBar(true)}></i>
+        </div>}
         </div>
         
     </nav>

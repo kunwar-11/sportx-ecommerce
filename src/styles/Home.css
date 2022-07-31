@@ -1,0 +1,29 @@
+.flex {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.full {
+    height:auto; 
+	min-height:100vh; 
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 150, 0.3)) , url(https://imgs.search.brave.com/JGdToq9EwrYFJzcdk43C5VpDElFBWtKC9lhZo1UFEXw/rs:fit:994:579:1/g:ce/aHR0cHM6Ly9saWZl/c3R5bGUuaXJlc2Vh/cmNobmV0LmNvbS93/cC1jb250ZW50L3Vw/bG9hZHMvMjAxNy8w/My9zcG9ydHMtcHN5/Y2hvbG9neS0xOS5q/cGc) no-repeat center center fixed; 
+    background-color: rgba(0, 0, 0, 0.5);
+    background-size: cover; 
+}
+
+.button1 {
+    background-color: transparent;
+    border: 1.5px solid whitesmoke;
+    color: aliceblue;
+    font-weight: bolder;
+    padding: 1rem 2rem;
+    margin: 1rem;
+}
+
+.button1:hover{
+    background-color: aliceblue;
+    border: 1.5px solid black;
+    color: black;
+}

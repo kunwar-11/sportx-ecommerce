@@ -1,5 +1,5 @@
 import React , {useEffect, useState} from 'react'
-import {useParams} from 'react-router-dom'
+import {useNavigate, useParams} from 'react-router-dom'
 import {useData , useAuth} from '../contexts'
 import {getRatingType , addToCartHandler , isWishListed , isInCart , addToWishList} from '../util'
 import {Navbar} from './Navbar'
@@ -12,6 +12,7 @@ export const Productpage = () => {
     const {state : {status , cart , wishList} , dispatch , setMessage , message} = useData()
     const {userId} = useAuth() 
     const [details , setDetails] = useState(null)
+    const navigate = useNavigate()
      useEffect(() => {
          try {
             (async () => {
@@ -31,10 +32,10 @@ export const Productpage = () => {
                 <div className="product-img">
                     <img src={details.image} alt="product-img" className="image__responsive"/>
                     <div className="addbuttons desktop">
-                      {isWishListed(userId, wishList,details._id) ? <Link to="/wishlist"><div className = 'buttons wishlist'>WISHLISTED</div></Link> : <div className = 'buttons wishlist' onClick = {() => addToWishList(details._id  , dispatch , userId ,setMessage)}>WISHLIST</div>}
+                      {isWishListed(userId, wishList,details._id) ? <Link to="/wishlist"><div className = 'buttons wishlist'>WISHLISTED</div></Link> : <div className = 'buttons wishlist' onClick = {userId ? () => addToWishList(details._id  , dispatch , userId ,setMessage) : () => navigate("/login")}>WISHLIST</div>}
                       {isInCart(userId ,cart , details._id)? <Link to = '/cart'><div className = 'buttons cart'>GO TO CART</div>
                       </Link>
-                       : <div className = 'buttons cart' onClick = {() => addToCartHandler(details._id , dispatch , userId , setMessage)}>ADD TO CART</div>}
+                       : <div className = 'buttons cart' onClick = {userId ? () => addToCartHandler(details._id , dispatch , userId , setMessage) : () => navigate("/login")}>ADD TO CART</div>}
             </div>
                 </div>
                 <div className="product-details">
@@ -59,10 +60,10 @@ export const Productpage = () => {
                 </div>
                 </div>                 
             <div  className="addbuttons mobile">
-                      {isWishListed(userId , wishList,details._id) ? <Link to="/wishlist"><div className = 'buttons wishlist'>WISHLISTED</div></Link> : <div className = 'buttons wishlist' onClick = {() => addToWishList(details._id  , dispatch , userId , setMessage)}>WISHLIST</div>}
+                      {isWishListed(userId , wishList,details._id) ? <Link to="/wishlist"><div className = 'buttons wishlist'>WISHLISTED</div></Link> : <div className = 'buttons wishlist' onClick = {userId ? () => addToWishList(details._id  , dispatch , userId , setMessage) : ()=>navigate("/login")}>WISHLIST</div>}
                       {isInCart(userId ,cart,details._id)? <Link to = '/cart'><div className = 'buttons cart'>GO TO CART</div>
                       </Link>
-                       : <div className = 'buttons cart' onClick = {() => addToCartHandler(details._id , dispatch , userId , setMessage)}>ADD TO CART</div>}
+                       : <div className = 'buttons cart' onClick = {userId ? () => addToCartHandler(details._id , dispatch , userId , setMessage) : () => navigate("/login")}>ADD TO CART</div>}
             </div>
                 </>}
                 {status === false && <Snackbar message = {message} type = {"snackbar__primary"}/>}
