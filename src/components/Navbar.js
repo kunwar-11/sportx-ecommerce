@@ -2,7 +2,6 @@ import React from 'react'
 import {useAuth, useData} from '../contexts'
 import {Link, useNavigate} from 'react-router-dom'
 import '../styles/navbar.css'
-import {Sidebar} from './Sidebar'
 export const Navbar = () => {
     const {sideBar , setSideBar} = useData()
     const {userId , setLogin , setUserName , setUserId } = useAuth()
@@ -19,7 +18,6 @@ export const Navbar = () => {
     }
     return (
     <>
-    <Sidebar />
     <nav className="navbar">
         <Link to = '/' >
             <div className="nav__brand">

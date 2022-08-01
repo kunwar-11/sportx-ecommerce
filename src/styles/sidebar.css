@@ -16,7 +16,7 @@
     display: block;
 }
 .hide {
-    display: none;
+   display: none;
 }
 .sidebar__list{
     padding-inline-start: 0px;

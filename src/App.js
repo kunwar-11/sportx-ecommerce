@@ -5,6 +5,7 @@ import './styles/App.css'
 import {PrivateRoute} from './util'
 import axios from 'axios'
 import { useData , useAuth } from './contexts'
+import {Sidebar} from "./components/Sidebar"
 function App() {
   const {login , setUsers , userId} = useAuth()
   const {dispatch} = useData()
@@ -58,6 +59,7 @@ useEffect(() =>{
 }},[dispatch , userId])
   return (
     <div className="App">
+        <Sidebar />
         <Routes>
           <Route path = '/' element = {<Home />} />
           <Route path = '/productlist' element = {<ProductList />} />
